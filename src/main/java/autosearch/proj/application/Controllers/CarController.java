@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Services.CarService;
 
+//Rest API Annotation to allow for HTTP method
 @RestController
 public class CarController {
 
@@ -21,7 +22,7 @@ public class CarController {
 	}
 	
 	//Endpoint for GET HTTP method, ie READ (CRUD), this will return all car objects in
-	//the database as a JSON object.  
+	//the database as JSON
 	@GetMapping("/carsearch")
 	 @ResponseBody
 	    public List<Car> getAllCars() {
