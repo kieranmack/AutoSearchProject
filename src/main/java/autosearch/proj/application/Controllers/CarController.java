@@ -3,6 +3,8 @@ package autosearch.proj.application.Controllers;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,4 +31,12 @@ public class CarController {
 	        return carService.returnAllCars();
 
 	 }
+	
+	//Testing Post endpoint, but since my front end will really be read only
+	//I think I will only need GET endpoints, will leave it for now PROBABLY DELETE LATER
+	@PostMapping("/carsearch")
+	@ResponseBody
+	public Car createCar(@RequestBody Car car) {
+		return carService.createCar(car);
+	}
 }
