@@ -11,4 +11,6 @@ public interface CarService {
 
 	
 	public List<Car> returnAllCars();
+	
+	public Car createCar(Car car);
 }
