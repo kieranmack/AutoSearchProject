@@ -34,6 +34,17 @@ public class Car {
 	private String source;
 	private Date dateAdded;
 	
+	public Car (String make, String model, String year, int mileage, double price, String source, 
+			Date dateAdded){
+		this.make = make;
+		this.model = model;
+		this.year = year;
+		this.mileage = mileage;
+		this.price = price;
+		this.source = source;
+		this.dateAdded = dateAdded;
+	}
+	
 	//Getters and Setters
 	//Left out setId, because the the GeneratedValue tag sets it automatically when mapped. 
 	//Scraping service will use setters to generate raw car object down the line, repository will
