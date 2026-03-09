@@ -34,6 +34,8 @@ public class Car {
 	private String source;
 	private Date dateAdded;
 	
+	public Car() {}
+	
 	public Car (String make, String model, String year, int mileage, double price, String source, 
 			Date dateAdded){
 		this.make = make;
