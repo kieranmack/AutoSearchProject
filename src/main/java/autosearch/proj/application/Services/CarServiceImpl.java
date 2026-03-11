@@ -1,9 +1,13 @@
 package autosearch.proj.application.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Repositories.CarRepository;
 
@@ -13,12 +17,10 @@ import autosearch.proj.application.Repositories.CarRepository;
 public class CarServiceImpl implements CarService {
 
 	//Create instance of repository in service for calls to it's methods. (JPA's methods)
-	private final CarRepository carRepository;
+	@Autowired
+	private CarRepository carRepository;
 	
-	//Constructor for repostiory object
-	public CarServiceImpl(CarRepository carRepository) {
-		this.carRepository = carRepository;
-	}
+	
 	
 	//Method to return all cars, this will likely be used sparingly in my final 
 	//project, perhaps for the admins screen, but just for now to show basic functionality
@@ -33,5 +35,19 @@ public class CarServiceImpl implements CarService {
 	public Car createCar(Car car) {
 		return carRepository.save(car);
 	}
+
+	@Override
+	public CarDTO convertToDTO(Car car) {
+		CarDTO returnCar = new CarDTO(
+				car.getMake(),
+				car.getModel(),
+				car.getYear(),
+				car.getMileage(),
+				car.getPrice());
+		return returnCar;
+				
+	}
+
+	
 
 }

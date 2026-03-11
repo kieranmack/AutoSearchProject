@@ -1,6 +1,7 @@
 package autosearch.proj.application.Services;
 import java.util.List;
 
+import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 
 //Interface for Car Service Implementation Class, I will include these for each 
@@ -13,4 +14,8 @@ public interface CarService {
 	public List<Car> returnAllCars();
 	
 	public Car createCar(Car car);
+	
+	public CarDTO convertToDTO(Car car);
+	
+	
 }
