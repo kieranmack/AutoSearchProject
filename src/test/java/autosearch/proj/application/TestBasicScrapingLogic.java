@@ -25,7 +25,6 @@ public class TestBasicScrapingLogic {
 
 		// check if file exists, if doesn;t break the logic so as to not break anything
 		if (!file.exists()) {
-			System.out.println("File not found.");
 			return;
 		}
 

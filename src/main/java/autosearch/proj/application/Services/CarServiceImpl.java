@@ -28,8 +28,7 @@ public class CarServiceImpl implements CarService {
 		return carRepository.findAll();
 	}
 	
-	//CREATING CAR METHOD, right now in kahoots with POST Method, but will likely only be served
-	//backend with no front end endpoint needed, ie only my scraper will be creating Cars.  
+	//Create car method, scraper will eventually use this method to instantiate car objects
 	
 	public Car createCar(Car car) {
 		return carRepository.save(car);
