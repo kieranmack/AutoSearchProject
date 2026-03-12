@@ -47,6 +47,8 @@ public class Car {
 		this.dateAdded = dateAdded;
 	}
 	
+
+	
 	//Getters and Setters
 	//Left out setId, because the the GeneratedValue tag sets it automatically when mapped. 
 	//Scraping service will use setters to generate raw car object down the line, repository will
