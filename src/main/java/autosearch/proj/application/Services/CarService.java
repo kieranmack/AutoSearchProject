@@ -17,5 +17,7 @@ public interface CarService {
 	
 	public CarDTO convertToDTO(Car car);
 	
+	public List<CarDTO> convertToDTOList(List<Car> entityList);
+	
 	
 }

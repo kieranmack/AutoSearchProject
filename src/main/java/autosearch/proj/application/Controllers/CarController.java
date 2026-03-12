@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Services.CarService;
 
@@ -31,6 +32,13 @@ public class CarController {
 	public List<Car> getAllCars() {
 		return carService.returnAllCars();
 
+		}
+	//same concept as before, but instead with DTO objects. 
+	@GetMapping("/DTOsearch")
+	@ResponseBody
+	public List<CarDTO> getAllDTOs(){
+		List<Car> entityCars = carService.returnAllCars();
+		return carService.convertToDTOList(entityCars);
 	}
 
 	

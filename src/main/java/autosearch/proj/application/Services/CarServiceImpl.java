@@ -3,7 +3,7 @@ package autosearch.proj.application.Services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +36,7 @@ public class CarServiceImpl implements CarService {
 		return carRepository.save(car);
 	}
 
+	//method for converting single Car element to DTO
 	@Override
 	public CarDTO convertToDTO(Car car) {
 		CarDTO returnCar = new CarDTO(
@@ -47,7 +48,16 @@ public class CarServiceImpl implements CarService {
 		return returnCar;
 				
 	}
-
+	
+	
+	public List<CarDTO> convertToDTOList(List<Car> entityList){
+		List<CarDTO> returnList = new ArrayList<>();
+		for(Car car : entityList) {
+			CarDTO newCar = convertToDTO(car);
+			returnList.add(newCar);
+		}
+		return returnList;
+	}
 	
 
 }
