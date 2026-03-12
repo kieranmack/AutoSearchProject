@@ -111,9 +111,12 @@ public class DuplicateTesting {
 			System.out.println("Duplicate count: " + dupeCount);
 			
 			//need to override Object contains () method likely, duplicates not being 
-			//registered.  Everything is being converted to DTOs however. 
+			//registered.  Everything is being converted to DTOs however.
 			
-		
+			//overridden methods allow for duplicate to work exactly as intended, scrape 
+			//logic pretty much complete!
+			
+			
 		
 		
 	}
