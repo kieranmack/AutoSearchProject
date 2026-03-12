@@ -18,6 +18,8 @@ public class AdminController {
 		this.scraperServ = scraperServ;
 	}
 	//endpoint for triggering scrape manually, will add scheduled later on
+	
+	
 		@GetMapping("/adminscrape")
 			public String triggerScrape() {
 			try {
@@ -30,4 +32,5 @@ public class AdminController {
 			
 		
 		}
+		
 }
