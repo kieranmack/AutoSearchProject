@@ -1,5 +1,7 @@
 package autosearch.proj.application.DTOs;
 
+import java.util.Objects;
+
 //Car object with only user facing fields, hides things like id, source, and dateadded.
 public class CarDTO {
 
@@ -57,6 +59,30 @@ public class CarDTO {
 		return "CAR DTO: " + make + " " + model + " " +
 							year + " " + mileage + " " + price;
 	}
+	
+	
+	//Overridden hash code and equals methods, to compare VALUE and not identity
+	//found out that eclipse can generate these for you automatically, so duplicate should 
+	//work now in test class
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(make, mileage, model, price, year);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CarDTO other = (CarDTO) obj;
+		return Objects.equals(make, other.make) && mileage == other.mileage && Objects.equals(model, other.model)
+				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
+				&& Objects.equals(year, other.year);
+	}
+	
 	
 	
 	
