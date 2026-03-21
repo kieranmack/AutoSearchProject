@@ -74,7 +74,7 @@ public class DuplicateTesting {
 			String priceText = listing.select(".price").text().replace("Price: ", "");
 			double price = Double.parseDouble(priceText);
 			
-			CarDTO car = new CarDTO(make, model, year, mileage, price);
+			CarDTO car = new CarDTO(make, model, year, mileage, price, source);
 			
 			scrapedElementList.add(car);
 			

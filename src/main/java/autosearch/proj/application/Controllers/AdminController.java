@@ -23,7 +23,7 @@ public class AdminController {
 		@GetMapping("/adminscrape")
 			public String triggerScrape() {
 			try {
-			scraperServ.scrapeAndSaveSiteA();
+			scraperServ.scrapeAndSaveSite();
 			return "Scrape Success!";
 		}catch (IOException e) {
 			e.printStackTrace();

@@ -38,7 +38,7 @@ public class TestEntityToDTO {
 		for(Car car : entityList) {
 			
 			CarDTO transferCar = new CarDTO(car.getMake(), car.getModel(), car.getYear(),
-										car.getMileage(), car.getPrice());
+										car.getMileage(), car.getPrice(), car.getSource());
 			
 			dtoList.add(transferCar);
 		}

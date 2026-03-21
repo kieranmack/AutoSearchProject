@@ -44,7 +44,8 @@ public class CarServiceImpl implements CarService {
 				car.getModel(),
 				car.getYear(),
 				car.getMileage(),
-				car.getPrice());
+				car.getPrice(),
+				car.getSource());
 		return returnCar;
 				
 	}
