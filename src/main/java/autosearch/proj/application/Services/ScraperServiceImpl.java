@@ -24,7 +24,8 @@ public class ScraperServiceImpl {
 	private final CarService carService;
 	
 	Date currentDate = new Date();
-	String source = "siteA.html";
+	String sourceA = "siteA.html";
+	String sourceB = "siteB.html";
 
 	// constructor to create car Repo object
 	ScraperServiceImpl(CarRepository carRepo, CarService carService) {
@@ -33,8 +34,10 @@ public class ScraperServiceImpl {
 	}
 	
 	//wrapper method to call all private helper methods
-	public void scrapeAndSaveSiteA() throws IOException {
-		List<CarDTO> scrapedList = scrapeSiteA();
+	public void scrapeAndSaveSite() throws IOException {
+		List<CarDTO> scrapedListA = scrapeSiteA();
+		List<CarDTO> scrapedListB = scrapeSiteB();
+		List<CarDTO> scrapedList = mergeLists(scrapedListA, scrapedListB);
 		List<CarDTO> dbDTOList = getDBCarsAsDTOs();
 		
 		compareForDupesAndSave(dbDTOList, scrapedList);
@@ -75,7 +78,7 @@ public class ScraperServiceImpl {
 			double price = Double.parseDouble(priceText);
 
 			// also create a DTO to populate the list we will compare against the
-			CarDTO carDTO = new CarDTO(make, model, year, mileage, price);
+			CarDTO carDTO = new CarDTO(make, model, year, mileage, price, sourceA);
 
 			scrapedList.add(carDTO);
 
@@ -103,11 +106,72 @@ public class ScraperServiceImpl {
 		for(CarDTO car : scrapedList) {
 			if(!dbListAsDTOs.contains(car)) {
 				Car newCar = new Car(car.getMake(), car.getModel(), car.getYear(),
-									car.getMileage(), car.getPrice(), source, currentDate );
+									car.getMileage(), car.getPrice(), car.getSource(), currentDate );
 				carRepo.save(newCar);
 			}
 		}
 		
+	}
+	
+	//Here is where we create the first list for the scraped cars from siteB
+	private List<CarDTO> scrapeSiteB() throws IOException {
+		
+		List<CarDTO> scrapedList = new ArrayList<>();
+		File file = new ClassPathResource("static/siteB.html").getFile();
+		
+		String year = "";
+		String make = "";
+		String model = "";
+		int mileage = 0;
+		double price = 0;
+		
+		Document doc = Jsoup.parse(file, "UTF-8");
+		
+		Elements listings = doc.select(".listing");
+		
+		for(Element listing : listings) {
+			String title = listing.select(".title").text();
+			//split up the title, now do the same for the details, which includes
+			//mileage and price. 
+			String[] titleSplit = title.split(" ");
+			int index = 0;
+			while(index < titleSplit.length) {
+				if(index == 0) {
+					 year = titleSplit[index];
+				}else if(index == 1) {
+					 make = titleSplit[index];
+				}else {
+					 model = titleSplit[index];
+				}
+				index++;
+			}
+			//here is where we split up details
+			//I hardcoded position using detailSplit[i] since I would assume a real world
+			//site would follow a distinct structure, so that's why I did it that way.  
+			String details = listing.select(".details").text();
+			String []detailSplit = details.split(" ");
+			
+			mileage = Integer.parseInt(detailSplit[1]);
+			
+			price = Double.parseDouble(detailSplit[4].replace("$", ""));
+			
+			CarDTO car = new CarDTO(make, model, year, mileage, price, sourceB);
+			scrapedList.add(car);
+		}
+		
+		return scrapedList;
+	
+	}
+	
+	//merge the two scraped lists together so as to not rewrite an entire new dupecheck
+	//method
+	private List<CarDTO> mergeLists(List<CarDTO> scrapedA, List<CarDTO> scrapedB) {
+		for(CarDTO car : scrapedB) {
+			if(!scrapedA.contains(car)) {
+				scrapedA.add(car);
+			}
+		}
+		return scrapedA;
 	}
 
 }
