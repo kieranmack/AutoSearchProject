@@ -100,6 +100,12 @@ public class Car {
 		this.dateAdded = dateAdded;
 	}
 	
+	@Override
+	public String toString() {
+		return "CAR: " + make + " " + model + " " +
+							year + " " + mileage + " " + price + " " + source
+									+ " " + dateAdded;
+	}
 	
 	
 }
