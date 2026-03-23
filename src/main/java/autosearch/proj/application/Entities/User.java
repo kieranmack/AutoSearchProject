@@ -18,11 +18,12 @@ public class User {
 	
 	private String username;
 	private String password;
+	
 	private String email;
 	
 	@ManyToOne
-	@JoinColumn(name = "roles_id")
-	private Roles role;
+	@JoinColumn(name = "role_id")
+	public Roles role;
 	
 	public int getId() {
 		return userId;
@@ -44,6 +45,13 @@ public class User {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public Roles getRole() {
+		return role;
+	}
+	public void setRole(Roles role) {
+		this.role = role;
 	}
 	
 	
