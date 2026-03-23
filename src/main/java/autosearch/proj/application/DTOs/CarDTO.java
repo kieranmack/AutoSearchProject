@@ -25,6 +25,8 @@ public class CarDTO {
 		this.source = source;
 	}
 	
+	
+	
 	public String getSource() {
 		return source;
 	}
@@ -89,7 +91,7 @@ public class CarDTO {
 	
 	//Overridden hash code and equals methods, to compare VALUE and not identity
 	//found out that eclipse can generate these for you automatically, so duplicate should 
-	//work now in test class
+	//work now in test class, and also works in service class. 
 	
 	
 	

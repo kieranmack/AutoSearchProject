@@ -51,6 +51,8 @@ public class CarServiceImpl implements CarService {
 	}
 	
 	
+	
+	//converts entire car list into a dto list for comparison
 	public List<CarDTO> convertToDTOList(List<Car> entityList){
 		List<CarDTO> returnList = new ArrayList<>();
 		for(Car car : entityList) {
@@ -59,6 +61,8 @@ public class CarServiceImpl implements CarService {
 		}
 		return returnList;
 	}
+	
+	
 	
 
 }
