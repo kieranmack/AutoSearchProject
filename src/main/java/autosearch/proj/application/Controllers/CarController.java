@@ -27,14 +27,14 @@ public class CarController {
 	// Endpoint for GET HTTP method, ie READ (CRUD), this will return all car
 	// objects in
 	// the database as JSON
-	@GetMapping("/carsearch")
+	@GetMapping("/admin/")
 	@ResponseBody
 	public List<Car> getAllCars() {
 		return carService.returnAllCars();
 
 		}
 	//same concept as before, but instead with DTO objects. 
-	@GetMapping("/DTOsearch")
+	@GetMapping("/search/")
 	@ResponseBody
 	public List<CarDTO> getAllDTOs(){
 		List<Car> entityCars = carService.returnAllCars();
