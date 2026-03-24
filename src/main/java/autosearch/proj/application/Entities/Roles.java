@@ -16,14 +16,16 @@ public class Roles {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int roleId;
 	
-	private String RoleType;
+	private String roleType;
+	
+	
 
 	public String getRoleType() {
-		return RoleType;
+		return roleType;
 	}
 
 	public void setRole(String roleType) {
-		this.RoleType = roleType;
+		this.roleType = roleType;
 	}
 	
 	
