@@ -10,5 +10,10 @@ public interface UserService {
 	public List<User> returnAllUsers();
 	
 	
+	public String registerUser(String username, String password, String email);
+	
+	public String loginUser(String username, String password);
+	
+	
 	
 }
