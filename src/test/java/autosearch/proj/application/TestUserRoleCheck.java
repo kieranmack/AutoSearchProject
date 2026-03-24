@@ -32,7 +32,7 @@ public class TestUserRoleCheck {
 			System.out.println(user.getUsername());
 		}
 		
-		//figured it out, one typo and I had to reorganize a ton of stuff, lord. 
+		//figured it out, one typo and I had to reorganize a ton of stuff 
 	
 		
 		System.out.println(user.getPassword());
@@ -59,9 +59,21 @@ public class TestUserRoleCheck {
 			System.out.println("admin screen");
 		}
 			}catch (NullPointerException e){
-			System.out.print(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		
 		
+		try {
+			
+			if(user.getRole().getRoleType().equals("User")) {
+				System.out.println("user screen");
+			}else {
+				System.out.println("admin screen");
+			}
+				}catch (NullPointerException e){
+				System.out.print(e.getMessage());
+			}
+			
+		//Role Check complete
 	}
 }
