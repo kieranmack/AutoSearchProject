@@ -1,5 +1,6 @@
 package autosearch.proj.application.Entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,6 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "users")
@@ -16,14 +21,29 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 	
+	//Using validation dependency, adding annotations to my user attributes
+	//this will allow us to make login / register completely seamless later on,
+	//if validation checks fail JSON returned will be an error message, front end will handle
+	//from there
+	
+	
+	@NotBlank(message = "Username is required")
+	@Column(unique = true)
 	private String username;
+	
+	@NotBlank(message = "Password is required")
+	@Size(min = 8, message = "Password must be atleast 8 characters")
 	private String password;
 	
+	
+	@NotBlank(message = "Email is required")
+	@Email
+	@Column(unique = true)
 	private String email;
 	
 	@ManyToOne
 	@JoinColumn(name = "role_id")
-	public Roles role;
+	private Roles role;
 	
 	public int getId() {
 		return userId;
