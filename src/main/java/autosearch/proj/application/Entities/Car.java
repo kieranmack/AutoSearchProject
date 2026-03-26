@@ -28,6 +28,9 @@ public class Car {
 	
 	private String make;
 	private String model;
+	
+	//Added annotation, because YEAR treated as a keyword in testing. Breaks the system. 
+	@Column(name = "year")
 	private String year;
 	private int mileage;
 	private double price;
