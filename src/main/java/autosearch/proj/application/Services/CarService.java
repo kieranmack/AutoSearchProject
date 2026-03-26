@@ -19,6 +19,8 @@ public interface CarService {
 	
 	public List<CarDTO> convertToDTOList(List<Car> entityList);
 	
+	public List<CarDTO> findCars(String make, String model, String year,
+			Integer minMileage, Integer maxMileage, Double minPrice, Double maxPrice);
 	
 	
 }

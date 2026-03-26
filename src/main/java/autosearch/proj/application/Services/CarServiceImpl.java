@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import autosearch.proj.application.DTOs.CarDTO;
@@ -20,6 +21,8 @@ public class CarServiceImpl implements CarService {
 	@Autowired
 	private CarRepository carRepository;
 	
+	//Specification object, extension of repository, builds dynamic where clauses for 
+	//streamlined search
 	
 	
 	//Method to return all cars, this will likely be used sparingly in my final 
@@ -48,6 +51,54 @@ public class CarServiceImpl implements CarService {
 				car.getSource());
 		return returnCar;
 				
+	}
+	
+	//dynamic search method, one method should work for all searches. 
+	@Override
+	public List<CarDTO> findCars(String make, String model, String year,
+			Integer minMileage, Integer maxMileage, Double minPrice, Double maxPrice){
+		//unnrestricted allows for unfiltered usage of parameterization, tried using
+		//where() but has since been deprecated. 
+		Specification<Car> spec = Specification.unrestricted();
+		 List<CarDTO> returnList = new ArrayList<>();
+		 List<Car> dbList = new ArrayList<>();
+		 //build specifications based on values given in parameter, don't have to be 
+		 //present in order to build where clause. 
+		 if (make != null) {  
+			    spec = spec.and((root, query, cb) -> cb.equal(root.get("make"), make));  
+			  }  
+			
+			if (model != null) {  
+			    spec = spec.and((root, query, cb) -> cb.equal(root.get("model"), model));  
+			  }  
+			
+			if (year != null) {  
+			    spec = spec.and((root, query, cb) -> cb.equal(root.get("year"), year)); 
+			  }  
+			
+			if (minMileage != null) {  
+			    spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("mileage"), minMileage));  
+			  }  
+			
+			if(maxMileage != null) {
+				spec = spec.and((root,query,cb) -> cb.lessThanOrEqualTo(root.get("mileage"), maxMileage));
+			}
+			
+			if (minPrice != null) {  
+			    spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("price"), minPrice));  
+			  } 
+			
+			if(maxPrice != null) {
+				spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"),maxPrice));
+			}
+			
+			dbList = carRepository.findAll(spec);
+			
+			returnList = convertToDTOList(dbList);
+			
+			return returnList;
+			
+		 
 	}
 	
 	
