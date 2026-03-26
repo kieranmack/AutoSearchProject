@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -126,6 +127,41 @@ public class UserServiceImpl implements UserService {
 		}
 		return false;
 	}
+	
+	//creating method where user is returned based on parameters, admin will 
+	//be the only one where this is possible. 
+	public List<UserDTO> returnUsers(String username, String email){
+		Specification<User> spec = Specification.unrestricted();
+		List<UserDTO> returnList = new ArrayList<>();
+		List<User> dbList = new ArrayList<>();
+		
+		
+		if(username != null) {
+			spec = spec.and((root, query, cb) -> cb.equal(root.get("username"), username));
+		}
+		
+		if(email != null) {
+			spec = spec.and((root, query, cb) -> cb.equal(root.get("email"), email));
+		}
+		
+		dbList = userRepository.findAll(spec);
+		returnList = convertToDTOList(dbList);
+		return returnList;
+	}
+	
+	//more robust option would be find by roletype will implement now
+	public List<UserDTO> returnUsersbyRole(Roles role){
+		Specification<User> spec = Specification.unrestricted();
+		List<UserDTO> returnList = new ArrayList<>();
+		List<User> dbList = new ArrayList<>();
+		
+		if(role != null) {
+			spec = spec.and((root, query, cb) -> cb.equal(root.get("role_id"), role)); 
+		}
+		
+		
+	}
+	
 
 }
 	

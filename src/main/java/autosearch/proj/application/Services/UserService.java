@@ -2,6 +2,7 @@ package autosearch.proj.application.Services;
 
 import java.util.List;
 
+import autosearch.proj.application.DTOs.UserDTO;
 import autosearch.proj.application.Entities.Roles;
 import autosearch.proj.application.Entities.User;
 
@@ -13,6 +14,8 @@ public interface UserService {
 	public String registerUser(String username, String password, String email);
 	
 	public String loginUser(String username, String password);
+	
+	public List<UserDTO> returnUsers(String username, String email);
 	
 	
 	
