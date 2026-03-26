@@ -2,9 +2,11 @@ package autosearch.proj.application.Controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,14 +18,11 @@ import autosearch.proj.application.Services.CarService;
 @RestController
 public class CarController {
 
-	// CarService object
-	private final CarService carService;
+	@Autowired
+	private CarService carService;
 
 	// constructor to create carservice object to make calls to the service class
-	public CarController(CarService carService) {
-		this.carService = carService;
-	}
-
+	
 	// Endpoint for GET HTTP method, ie READ (CRUD), this will return all car
 	// objects in
 	// the database as JSON
@@ -33,14 +32,35 @@ public class CarController {
 		return carService.returnAllCars();
 
 		}
-	//same concept as before, but instead with DTO objects. 
+
+	// same concept as before, but instead with DTO objects.
+	/*
+	  @GetMapping("/search/")
+	  
+	  @ResponseBody public List<CarDTO> getAllDTOs(){ 
+		  List<Car> entityCars =
+	  carService.returnAllCars(); return carService.convertToDTOList(entityCars);
+	  }
+	*/ 
+
+	//Controller for car search, this is the endpoint which we wil check against the parameters
+	//each parameter is optional meaning, if the user leaves it out it will not be added to where clause
+	//detailed code in service class
 	@GetMapping("/search/")
 	@ResponseBody
-	public List<CarDTO> getAllDTOs(){
-		List<Car> entityCars = carService.returnAllCars();
-		return carService.convertToDTOList(entityCars);
+	public List<CarDTO> getCars(
+			@RequestParam(required = false) String make,
+			@RequestParam(required = false) String model,
+			@RequestParam(required = false) String year,
+			@RequestParam(required = false) Integer minMileage,
+			@RequestParam(required = false) Integer maxMileage,
+			@RequestParam(required = false) Double minPrice,
+			@RequestParam(required = false) Double maxPrice){
+		
+		return carService.findCars(make, model, year, minMileage, maxMileage,
+						minPrice, maxPrice);
 	}
-
 	
-	}
-
+			
+	
+}
