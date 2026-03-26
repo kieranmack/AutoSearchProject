@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import autosearch.proj.application.DTOs.UserDTO;
 import autosearch.proj.application.Entities.User;
 import autosearch.proj.application.Services.UserService;
 import autosearch.proj.application.Services.UserServiceImpl;
@@ -22,6 +23,15 @@ public class UserController {
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
+	
+	@GetMapping("/admindashboard/")
+	@ResponseBody
+	public List<UserDTO> returnUsersSpec(
+			@RequestParam(required = false) String username,
+			@RequestParam(required = false) String email){
+		return userService.returnUsers(username, email);
+	}
+	
 	
 	@GetMapping("/admin")
 	@ResponseBody
@@ -45,5 +55,8 @@ public class UserController {
 			@RequestParam String username,
 			@RequestParam String password) {
 		return userService.loginUser(username, password);
-	}
+	}	
+	
+	
+	
 }
