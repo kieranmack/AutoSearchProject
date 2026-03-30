@@ -16,6 +16,7 @@ import autosearch.proj.application.Entities.Roles;
 import autosearch.proj.application.Entities.User;
 import autosearch.proj.application.Repositories.RolesRepository;
 import autosearch.proj.application.Repositories.UserRepository;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
 	//if not a match prompt user to try again
 	//then use Spring security password encoder to check if raw password == hash password. 
 	@Override
-	public String loginUser(String username, String password) {
+	public String loginUser(String username, String password, HttpSession session) {
 		
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
@@ -87,6 +88,7 @@ public class UserServiceImpl implements UserService {
 			return "Try again, username or password incorrect.";
 		}
 		
+		session.setAttribute("loggedIn", user);
 		return "Success! Moving to Search Screen";
 	}
 	
