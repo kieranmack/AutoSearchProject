@@ -101,10 +101,10 @@ public class UserServiceImpl implements UserService {
 	// same method as car but this time for users.
 	private UserDTO convertToDTO(User user) {
 		String newEmail = user.getEmail();
-		String newPass = user.getPassword();
+		
 		String newUser = user.getUsername();
 		
-		UserDTO userDTO = new UserDTO(newUser, newPass, newEmail);
+		UserDTO userDTO = new UserDTO(newUser, newEmail);
 		return userDTO;
 	}
 	
@@ -128,39 +128,18 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 	
-	//creating method where user is returned based on parameters, admin will 
-	//be the only one where this is possible. 
-	public List<UserDTO> returnUsers(String username, String email){
-		Specification<User> spec = Specification.unrestricted();
+	
+	//code for returning by role, will now test. 
+	public List<UserDTO> returnUsers(String roleType){
+		List<User> dbList = userRepository.findByRole_roleType(roleType);
 		List<UserDTO> returnList = new ArrayList<>();
-		List<User> dbList = new ArrayList<>();
-		
-		
-		if(username != null) {
-			spec = spec.and((root, query, cb) -> cb.equal(root.get("username"), username));
-		}
-		
-		if(email != null) {
-			spec = spec.and((root, query, cb) -> cb.equal(root.get("email"), email));
-		}
-		
-		dbList = userRepository.findAll(spec);
 		returnList = convertToDTOList(dbList);
 		return returnList;
 	}
 	
-	//more robust option would be find by roletype will implement now
-	public List<UserDTO> returnUsersbyRole(Roles role){
-		Specification<User> spec = Specification.unrestricted();
-		List<UserDTO> returnList = new ArrayList<>();
-		List<User> dbList = new ArrayList<>();
-		
-		if(role != null) {
-			spec = spec.and((root, query, cb) -> cb.equal(root.get("role_id"), role)); 
-		}
-		
-		
-	}
+	
+	
+	
 	
 
 }

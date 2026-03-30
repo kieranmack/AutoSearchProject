@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import autosearch.proj.application.DTOs.UserDTO;
+import autosearch.proj.application.Entities.Roles;
 import autosearch.proj.application.Entities.User;
 import autosearch.proj.application.Services.UserService;
 import autosearch.proj.application.Services.UserServiceImpl;
@@ -27,9 +28,9 @@ public class UserController {
 	@GetMapping("/admindashboard/")
 	@ResponseBody
 	public List<UserDTO> returnUsersSpec(
-			@RequestParam(required = false) String username,
-			@RequestParam(required = false) String email){
-		return userService.returnUsers(username, email);
+			 String roleType){
+			
+		return userService.returnUsers(roleType);
 	}
 	
 	

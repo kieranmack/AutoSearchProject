@@ -15,7 +15,7 @@ public interface UserService {
 	
 	public String loginUser(String username, String password);
 	
-	public List<UserDTO> returnUsers(String username, String email);
+	public List<UserDTO> returnUsers(String roleType);
 	
 	
 	

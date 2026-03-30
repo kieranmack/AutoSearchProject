@@ -7,4 +7,6 @@ import autosearch.proj.application.Entities.Roles;
 public interface RolesRepository extends JpaRepository<Roles, Integer> {
 
 	Roles findByRoleType(String roleType);
+
+	
 }

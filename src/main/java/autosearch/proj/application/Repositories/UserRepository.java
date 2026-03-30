@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import autosearch.proj.application.Entities.Roles;
 import autosearch.proj.application.Entities.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>, 
@@ -16,6 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer>,
 	 
 	 User findByUsername(String username);
 	 
+	 List<User> findByRole_roleType(String roleType);
 	
 	 User findById(int id);
 	 
