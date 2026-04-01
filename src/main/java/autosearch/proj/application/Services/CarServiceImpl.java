@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
+import autosearch.proj.application.Entities.Favorite;
+import autosearch.proj.application.Entities.User;
 import autosearch.proj.application.Repositories.CarRepository;
+import autosearch.proj.application.Repositories.FavoriteRepository;
+import jakarta.servlet.http.HttpSession;
 
 //Car Service implementation, override interface methods
 //Service tag is necessary for Spring Boot to read
@@ -21,9 +25,8 @@ public class CarServiceImpl implements CarService {
 	@Autowired
 	private CarRepository carRepository;
 	
-	//Specification object, extension of repository, builds dynamic where clauses for 
-	//streamlined search
-	
+	@Autowired
+	private FavoriteRepository favoriteRepository;
 	
 	//Method to return all cars, this will likely be used sparingly in my final 
 	//project, perhaps for the admins screen, but just for now to show basic functionality
@@ -33,7 +36,7 @@ public class CarServiceImpl implements CarService {
 		return carRepository.findAll();
 	}
 	
-	//Create car method, scraper will eventually use this method to instantiate car objects
+	//Create car method
 	
 	public Car createCar(Car car) {
 		return carRepository.save(car);
@@ -51,6 +54,28 @@ public class CarServiceImpl implements CarService {
 				car.getSource());
 		return returnCar;
 				
+	}
+	
+	//method to return cars based on session which holds user Id
+	@Override
+	public List<CarDTO> returnFavorites(HttpSession session){
+		User user = (User)session.getAttribute("loggedIn");
+		List<Favorite> favoriteList = new ArrayList<>();
+		List<CarDTO> returnList = new ArrayList<>();
+		
+		if(user == null) {
+			return returnList;
+		}
+		favoriteList = favoriteRepository.findByUserId(user.getId());
+		
+		for(Favorite fav : favoriteList) {
+			CarDTO addCar = convertToDTO(fav.getCar());
+			returnList.add(addCar);
+		}
+		
+		return returnList;
+		
+		
 	}
 	
 	//dynamic search method, one method should work for all searches. 
@@ -100,7 +125,6 @@ public class CarServiceImpl implements CarService {
 			
 		 
 	}
-	
 	
 	
 	//converts entire car list into a dto list for comparison
