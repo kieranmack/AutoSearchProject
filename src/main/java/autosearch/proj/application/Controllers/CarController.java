@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Services.CarService;
+import jakarta.servlet.http.HttpSession;
 
 //Rest API Annotation to allow for HTTP method
 @RestController
@@ -33,15 +34,6 @@ public class CarController {
 
 		}
 
-	// same concept as before, but instead with DTO objects.
-	/*
-	  @GetMapping("/search/")
-	  
-	  @ResponseBody public List<CarDTO> getAllDTOs(){ 
-		  List<Car> entityCars =
-	  carService.returnAllCars(); return carService.convertToDTOList(entityCars);
-	  }
-	*/ 
 
 	//Controller for car search, this is the endpoint which we wil check against the parameters
 	//each parameter is optional meaning, if the user leaves it out it will not be added to where clause
@@ -60,7 +52,11 @@ public class CarController {
 		return carService.findCars(make, model, year, minMileage, maxMileage,
 						minPrice, maxPrice);
 	}
-	
+	@GetMapping("/search/favorites/")
+	@ResponseBody
+	public List<CarDTO> getFavorites(HttpSession session){
+		return carService.returnFavorites(session);
+	}
 			
 	
 }
