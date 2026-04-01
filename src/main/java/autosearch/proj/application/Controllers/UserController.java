@@ -4,15 +4,18 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import autosearch.proj.application.ApiResponse.ApiResponse;
 import autosearch.proj.application.DTOs.UserDTO;
 import autosearch.proj.application.Entities.Roles;
 import autosearch.proj.application.Entities.User;
 import autosearch.proj.application.Services.UserService;
 import autosearch.proj.application.Services.UserServiceImpl;
+import jakarta.servlet.http.HttpSession;
 
 //Rest API Annotation
 
@@ -34,29 +37,28 @@ public class UserController {
 	}
 	
 	
-	@GetMapping("/admin")
-	@ResponseBody
-	public List<User> returnAllUsers() {
-		
-		return userService.returnAllUsers();
-	}
-	
+	//register endpoint
 	@PostMapping("/user/register/")
 	@ResponseBody
-	public String registerUser(
+	public ApiResponse registerUser(
 			@RequestParam String username,
 			@RequestParam String password,
 			@RequestParam String email) {
 		return userService.registerUser(username, password, email);
 	}
 	
+	//user login endpoint
 	@PostMapping("/user/login/")
 	@ResponseBody
-	public String loginUser(
+	public ApiResponse loginUser(
 			@RequestParam String username,
-			@RequestParam String password) {
-		return userService.loginUser(username, password);
-	}	
+			@RequestParam String password,
+			HttpSession session) {
+		return userService.loginUser(username, password, session);
+	}
+	
+	
+	
 	
 	
 	
