@@ -10,6 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+
+import autosearch.proj.application.ApiResponse.ApiResponse;
 import autosearch.proj.application.DTOs.UserDTO;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Entities.Roles;
@@ -39,10 +42,10 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll();
 	}
 
-	// registering user to database, need to check if they exist in database first.
-	// separate method to check if instance of user exists, need to create UserDTO
-	// for that.
-	public String registerUser(String username, String password, String email) {
+	// registering user to database
+	public ApiResponse registerUser(String username, String password, String email) {
+		
+		
 		List<UserDTO> dbDTOList = new ArrayList<>();
 		List<User> dbList = userRepository.findAll();
 		dbDTOList = convertToDTOList(dbList);
@@ -64,32 +67,44 @@ public class UserServiceImpl implements UserService {
 		boolean check = compareForDupes(userDTO, dbDTOList);
 		
 		if(check) {
-			return("User cannot be saved, already exists in database");
-		}
+			return new ApiResponse(false, "User cannot be saved, already exists");
+		}else
 		
 		userRepository.save(user);
-		return "User successfully saved in database";
+		return new ApiResponse(true, "User succesfully saved");
 
 	}
 	
 	//login user, straight forward, find by username, 
 	//if not a match prompt user to try again
-	//then use Spring security password encoder to check if raw password == hash password. 
+	//then use Spring security password encoder to check if raw password == hash password.
+	//save session so future requests persist. 
 	@Override
-	public String loginUser(String username, String password, HttpSession session) {
+	public ApiResponse loginUser(String username, String password, HttpSession session) {
 		
 		User user = userRepository.findByUsername(username);
+		
 		if(user == null) {
-			return "Try again, username or password incorrect.";
+			return new ApiResponse(false, "No user found, try again");
 		}
+		Roles role = user.getRole();
+		String roleType = role.getRoleType();
 		boolean authPassword = passwordEncoder.matches(password, user.getPassword());
 		
 		if(!authPassword) {
-			return "Try again, username or password incorrect.";
+			return new ApiResponse(false, "username or password incorrect, try again");
 		}
 		
+		
+		//session created when logged in, user data saved. 
 		session.setAttribute("loggedIn", user);
-		return "Success! Moving to Search Screen";
+		
+		if(roleType.equals("Admin")) {
+			return new ApiResponse(true, "Admin");
+		}
+		
+		return new ApiResponse(true, "User");
+		
 	}
 	
 	
@@ -122,14 +137,14 @@ public class UserServiceImpl implements UserService {
 	
 	//checking if user dto exists in the database, if it does, prompt user to try again
 	private boolean compareForDupes(UserDTO userDTO, List<UserDTO> dbList) {
-		for(UserDTO user : dbList) {
-			if(userDTO.equals(user)) {
-				return true;
-			}
-		}
-		return false;
+	    for(UserDTO user : dbList) {
+	        if(user.getUsername().equals(userDTO.getUsername()) || 
+	           user.getEmail().equals(userDTO.getEmail())) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
-	
 	
 	//code for returning by role, will now test. 
 	public List<UserDTO> returnUsers(String roleType){
