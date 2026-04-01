@@ -3,6 +3,7 @@ import java.util.List;
 
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
+import jakarta.servlet.http.HttpSession;
 
 //Interface for Car Service Implementation Class, I will include these for each 
 //Service class, as to ensure cleanliness.  Right now only one method, just to show the 
@@ -22,5 +23,6 @@ public interface CarService {
 	public List<CarDTO> findCars(String make, String model, String year,
 			Integer minMileage, Integer maxMileage, Double minPrice, Double maxPrice);
 	
+	public List<CarDTO> returnFavorites(HttpSession session);
 	
 }
