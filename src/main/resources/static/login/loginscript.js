@@ -14,7 +14,7 @@
 		
 		try {
 				//await method, connects to controller endpoint
-		        const response = await fetch('user/login/', {
+		        const response = await fetch('/user/login/', {
 		            method: 'POST',
 					//content in the form of URL query params, not JSOn 
 		            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -28,9 +28,9 @@
 		if(!result.success){
 			 document.getElementById('message').textContent = result.message;
 		}else if(result.message == "Admin"){
-			window.location.href = "http://localhost:8080/admindashboard.html";
+			window.location.href = "/admindashboard.html";
 		}else
-			window.location.href = "http://localhost:8080/search.html";
+			window.location.href = "/search.html";
 			
 		
 			 } catch (error) {

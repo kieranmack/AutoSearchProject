@@ -15,7 +15,7 @@
 
     try {
 		//await method, connects to controller endpoint
-        const response = await fetch('user/register/', {
+        const response = await fetch('/user/register/', {
             method: 'POST',
 			//content in the form of URL query params, not JSOn 
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -32,7 +32,7 @@
 		}
 		
 		const button = document.getElementById('loginButton').addEventListener('click', function(){
-			window.location.href = "http://localhost:8080/login.html";
+			window.location.href = "/login/login.html";
 		});
 	
 		
