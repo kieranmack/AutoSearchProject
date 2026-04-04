@@ -38,7 +38,7 @@ public class CarController {
 	//Controller for car search, this is the endpoint which we wil check against the parameters
 	//each parameter is optional meaning, if the user leaves it out it will not be added to where clause
 	//detailed code in service class
-	@GetMapping("/search/")
+	@GetMapping("/api/search/")
 	@ResponseBody
 	public List<CarDTO> getCars(
 			@RequestParam(required = false) String make,
@@ -52,11 +52,12 @@ public class CarController {
 		return carService.findCars(make, model, year, minMileage, maxMileage,
 						minPrice, maxPrice);
 	}
-	@GetMapping("/search/favorites/")
+	@GetMapping("/api/search/favorites/")
 	@ResponseBody
 	public List<CarDTO> getFavorites(HttpSession session){
 		return carService.returnFavorites(session);
 	}
-			
+	
+	
 	
 }
