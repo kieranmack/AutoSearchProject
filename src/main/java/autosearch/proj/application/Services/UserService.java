@@ -2,7 +2,7 @@ package autosearch.proj.application.Services;
 
 import java.util.List;
 
-import com.google.gson.Gson;
+
 
 import autosearch.proj.application.ApiResponse.ApiResponse;
 import autosearch.proj.application.DTOs.UserDTO;

@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
+
 
 import autosearch.proj.application.ApiResponse.ApiResponse;
 import autosearch.proj.application.DTOs.UserDTO;
