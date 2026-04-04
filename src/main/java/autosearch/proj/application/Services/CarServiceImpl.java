@@ -137,6 +137,11 @@ public class CarServiceImpl implements CarService {
 		return returnList;
 	}
 	
+	public List<CarDTO> returnAllCarDTOs(){
+		return convertToDTOList(carRepository.findAll());
+		
+	}
+	
 	
 	
 	

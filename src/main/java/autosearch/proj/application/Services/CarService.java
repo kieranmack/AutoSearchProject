@@ -25,4 +25,6 @@ public interface CarService {
 	
 	public List<CarDTO> returnFavorites(HttpSession session);
 	
+	public List<CarDTO> returnAllCarDTOs();
+	
 }
