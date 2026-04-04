@@ -3,19 +3,42 @@
 //basic
 
 const url = new URL('http://localhost:8080/api/search/?');
+const searchButton = document.getElementById('searchButton');
 
-url.searchParams.append('make', 'Toyota');
-url.searchParams.append('model', 'Corolla');
-console.log(url);
+const makeDropdown = document.getElementById('makeSelect');
 
-fetch(url)
-    .then(response => response.json()) // converts raw JSON to JS object/array
-    .then(data => {
+	makeDropdown.addEventListener('change', function() {
 
-        const returnVals = document.getElementById('message');
+    	const selectedValue = makeDropdown.value;
+    	url.searchParams.set('make', selectedValue);
+    	console.log(url);
+
+});
+
+const modelDropdown = document.getElementById('modelSelect');
+
+	modelDropdown.addEventListener('change', function(){
+		const selectedValue = modelDropdown.value;
+		url.searchParams.set('model', selectedValue);
+		console.log(url);
+		
+});
+
+searchButton.addEventListener('click', function(){
+	fetch(url)
+	    .then(response => response.json()) // converts raw JSON to JS object/array
+	    .then(data => {
+
+	        const returnVals = document.getElementById('message');
 
 
-        returnVals.textContent = JSON.stringify(data, null, 2);
-        console.log(data); // your list of cars
-    })
-    .catch(err => console.error(err));
+	        returnVals.textContent = JSON.stringify(data, null, 2);
+	        console.log(data); 
+	    })
+	    .catch(err => console.error(err));
+	
+});
+
+
+
+    
