@@ -8,8 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LandingController {
 
-	@RequestMapping
-	public String landingPage() {
-		return "redirect:/register.html";
-	}
+	
 }
