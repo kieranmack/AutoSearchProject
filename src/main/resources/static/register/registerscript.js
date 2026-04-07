@@ -26,14 +26,12 @@
         const result = await response.json();
         document.getElementById('message').textContent = result.message;
 		
-		//if the success attribute is true, allow loginButton to show. 
+	//redirect to login page
 		if(result.success == true){
-			document.getElementById('loginButton').style.display = "block";
+			window.location.href = "/login/login.html";
 		}
 		
-		const button = document.getElementById('loginButton').addEventListener('click', function(){
-			window.location.href = "/login/login.html";
-		});
+		
 	
 		
     } catch (error) {
