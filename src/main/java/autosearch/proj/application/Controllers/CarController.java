@@ -43,13 +43,14 @@ public class CarController {
 	public List<CarDTO> getCars(
 			@RequestParam(required = false) String make,
 			@RequestParam(required = false) String model,
-			@RequestParam(required = false) String year,
+			@RequestParam(required = false) String minYear,
+			@RequestParam(required = false) String maxYear,
 			@RequestParam(required = false) Integer minMileage,
 			@RequestParam(required = false) Integer maxMileage,
 			@RequestParam(required = false) Double minPrice,
 			@RequestParam(required = false) Double maxPrice){
 		
-		return carService.findCars(make, model, year, minMileage, maxMileage,
+		return carService.findCars(make, model, minYear, maxYear, minMileage, maxMileage,
 						minPrice, maxPrice);
 	}
 	@GetMapping("/api/search/favorites/")

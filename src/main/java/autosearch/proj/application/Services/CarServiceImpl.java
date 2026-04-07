@@ -80,7 +80,7 @@ public class CarServiceImpl implements CarService {
 	
 	//dynamic search method, one method should work for all searches. 
 	@Override
-	public List<CarDTO> findCars(String make, String model, String year,
+	public List<CarDTO> findCars(String make, String model, String minYear, String maxYear,
 			Integer minMileage, Integer maxMileage, Double minPrice, Double maxPrice){
 		//unnrestricted allows for unfiltered usage of parameterization, tried using
 		//where() but has since been deprecated. 
@@ -97,8 +97,14 @@ public class CarServiceImpl implements CarService {
 			    spec = spec.and((root, query, cb) -> cb.equal(root.get("model"), model));  
 			  }  
 			
-			if (year != null) {  
-			    spec = spec.and((root, query, cb) -> cb.equal(root.get("year"), year)); 
+			if (minYear != null) {  
+			    spec = spec.and((root, query, cb) ->
+			    cb.greaterThanOrEqualTo(root.get("year"), minYear)); 
+			  }  
+			
+			if (maxYear != null) {  
+			    spec = spec.and((root, query, cb) ->
+			    cb.lessThanOrEqualTo(root.get("year"), maxYear)); 
 			  }  
 			
 			if (minMileage != null) {  
