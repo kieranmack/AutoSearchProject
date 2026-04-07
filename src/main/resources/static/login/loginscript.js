@@ -27,7 +27,7 @@
 		if(result.success == false){
 			 document.getElementById('message').textContent = result.message;
 		}else if(result.message == "Admin"){
-			window.location.href = "/admindashboard.html/";
+			window.location.href = "/admindash/admindashboard.html/";
 		}else
 			window.location.href = "/searchpage/search.html";
 			
