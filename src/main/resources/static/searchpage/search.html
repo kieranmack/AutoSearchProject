@@ -1,55 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Search Screen</title>
 </head>
 <body>
 	<h1>Select Below to Find the Car For You!</h1>
-<div class = "carParams">
-	<label for="makeSelect">Choose Make:</label>
+	<div class="carParams">
+		<label for="makeSelect">Choose Make:</label> <select name="cars"
+			id="makeSelect">
+			<option value="default">--Any Make--</option>
+		</select> 
+		<label for="modelSelect">Choose Model:</label> <select name="cars"
+			id="modelSelect">
+			<option value="default">--Models--</option>
+			<option value="Corolla">Corolla</option>
+		</select> 
+		<label for="yearSelect">Choose Year:</label> <select name="cars"
+			id="yearSelect">
+			<option value="default">--Years--</option>
+			<option value="1960-1969">1980-1989</option>
+			<option value="1970-1979">1970-1979</option>
+			<option value="1980-1989">1980-1989</option>
+			<option value="1990-1999">1990-1999</option>
+			<option value="2000-2009">2000-2009</option>
+			<option value="2010-2019">2010-2019</option>
+			<option value="2020-2026">2020-2026</option>
+			</select>
+<!-- -------------------------------------------------------------------------------- -->
+		
+<label for="priceSelect">Price:</label> <select
+			id="priceSelect">
+			<option value="greater">Greater than</option>
+			<option value="less">Less than</option>
+			<option value="equal">Equal to</option>
+		</select> <input type="number" id="priceValue" placeholder="Enter price:">
 
-	<select name="cars" id="makeSelect">
-		<option value="default">--Makes--</option>
-		<option value="Toyota">Toyota</option>
-		<option value= "Honda">Honda</option>
-	</select>
 
-	<label for="modelSelect">Choose Model:</label>
+		<label for="mileageSelect">Mileage:</label> <select
+			id="mileageSelect">
+			<option value="greater">Greater than</option>
+			<option value="less">Less than</option>
+			<option value="equal">Equal to</option>
+		</select> <input type="number" id="mileageValue" placeholder="Enter mileage">
 
-	<select name="cars" id="modelSelect">
-		<option value="default">--Models--</option>
-		<option value="Corolla">Corolla</option>
-	</select>
-	
-	<label for = "yearSelect">Choose Year:</label>
-	
-	<select name ="cars" id = "yearSelect">
-		<option value = "default">--Years--</option>
-		<option value = "1960-1969">1980-1989</option>
-		<option value = "1970-1979">1970-1979</option>
-		<option value = "1980-1989">1980-1989</option>
-		<option value = "1990-1999">1990-1999</option>
-		<option value = "2000-2009">2000-2009</option>
-		<option value = "2010-2019">2010-2019</option>
-		<option value = "2020-2026">2020-2026</option>
-	</select>
-	
-	<label for = "minPriceSlider">Choose Minimum Price:</label>
-	
-	<input type = "range" min = "0" max = "65000" value = "0" class = "slider"
-	id = "minPriceSlider">
-	
-</div>
+	</div>
 
-<br>
-<br>
+	<br>
+	<br>
 
 
 	<button id="searchButton">Execute Search</button>
-	
-	<button id = "favoritesButton">View Favorites</button>
+
+	<button id="favoritesButton">View Favorites</button>
 
 	<p id="message"></p>
+	
+	<br>
+	<br>
+	
+	<div id = "carDiv"></div>
 
 	<script src="searchscript.js"></script>
 
