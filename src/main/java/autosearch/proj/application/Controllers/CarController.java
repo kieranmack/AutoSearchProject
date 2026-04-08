@@ -59,6 +59,12 @@ public class CarController {
 		return carService.returnFavorites(session);
 	}
 	
+	@GetMapping("/api/makes")
+	@ResponseBody
+	public List<String> getMakes(){
+		return carService.returnMakes();
+	}
+	
 	
 	
 }

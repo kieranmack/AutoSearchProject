@@ -148,6 +148,10 @@ public class CarServiceImpl implements CarService {
 		
 	}
 	
+	public List<String> returnMakes(){
+		return carRepository.findDistinctMake();
+	}
+	
 	
 	
 	

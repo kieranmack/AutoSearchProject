@@ -27,4 +27,6 @@ public interface CarService {
 	
 	public List<CarDTO> returnAllCarDTOs();
 	
+	public List<String> returnMakes();
+	
 }
