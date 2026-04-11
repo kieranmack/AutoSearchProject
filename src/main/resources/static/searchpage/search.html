@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<link rel="stylesheet" type="text/css" href="search.css">
 <title>Search Screen</title>
 </head>
 <body>
-	<h1>Select Below to Find the Car For You!</h1>
+	<div class=topnav>
+		<a href="/index.html">Home</a> <a href="/login/login.html">Login</a>
+		<a href="/register/register.html">Register</a>
+	</div>
+	<h2>Select Below to Find Info on Used Cars</h2>
 	<div class="carParams">
 		<label for="makeSelect">Choose Make:</label> <select name="cars"
 			id="makeSelect">
 			<option value="default">--Any Make--</option>
-		</select> 
-		<label for="modelSelect">Choose Model:</label> <select name="cars"
+		</select> <label for="modelSelect">Choose Model:</label> <select name="cars"
 			id="modelSelect">
-			<option value="default">--Models--</option>
-			<option value="Corolla">Corolla</option>
-		</select> 
-		<label for="yearSelect">Choose Year:</label> <select name="cars"
+			<option value="default">--Any Model--</option>
+
+		</select> <label for="yearSelect">Choose Year:</label> <select name="cars"
 			id="yearSelect">
 			<option value="default">--Years--</option>
 			<option value="1960-1969">1980-1989</option>
@@ -26,19 +28,17 @@
 			<option value="2000-2009">2000-2009</option>
 			<option value="2010-2019">2010-2019</option>
 			<option value="2020-2026">2020-2026</option>
-			</select>
-<!-- -------------------------------------------------------------------------------- -->
-		
-<label for="priceSelect">Price:</label> <select
-			id="priceSelect">
+		</select>
+		<!-- -------------------------------------------------------------------------------- -->
+
+		<label for="priceSelect">Price:</label> <select id="priceSelect">
 			<option value="greater">Greater than</option>
 			<option value="less">Less than</option>
 			<option value="equal">Equal to</option>
 		</select> <input type="number" id="priceValue" placeholder="Enter price:">
 
 
-		<label for="mileageSelect">Mileage:</label> <select
-			id="mileageSelect">
+		<label for="mileageSelect">Mileage:</label> <select id="mileageSelect">
 			<option value="greater">Greater than</option>
 			<option value="less">Less than</option>
 			<option value="equal">Equal to</option>
@@ -46,20 +46,38 @@
 
 	</div>
 
+	<p id="favP"></p>
+
 	<br>
 	<br>
 
+	<div>
+		<button id="searchButton">Execute Search</button>
 
-	<button id="searchButton">Execute Search</button>
+		<button id="favoritesButton">View Favorites</button>
 
-	<button id="favoritesButton">View Favorites</button>
+		<p id="message"></p>
+	</div>
 
-	<p id="message"></p>
-	
-	<br>
-	<br>
-	
-	<div id = "carDiv"></div>
+
+	<div id="carDiv"></div>
+
+	<div id="sortDiv" style="display: none">
+		<label for="sortSelect">Sort List:</label> <select name="sort"
+			id="sortSelect">
+			<option value="default">--No Conditions--</option>
+			<option value="prhl">Price High to Low:</option>
+			<option value="prlh">Price Low to High:</option>
+			<option value="mihl">Mileage High to Low:</option>
+			<option value="milh">Mileage Low to High:</option>
+			<option value="yrhl">Year New to Old:</option>
+			<option value="yrlh">Year Old to New:</option>
+
+		</select>
+	</div>
+
+	<button id="avgButton" style="display: none">Calculate
+		Average:</button>
 
 	<script src="searchscript.js"></script>
 
