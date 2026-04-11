@@ -1,6 +1,7 @@
 package autosearch.proj.application.Services;
 import java.util.List;
 
+import autosearch.proj.application.ApiResponse.ApiResponse;
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 import jakarta.servlet.http.HttpSession;
@@ -28,5 +29,11 @@ public interface CarService {
 	public List<CarDTO> returnAllCarDTOs();
 	
 	public List<String> returnMakes();
+	
+	public List<String> returnModelsByMake(String make);
+	
+	public ApiResponse addFavorite(HttpSession session, int carId);
+	
+	
 	
 }

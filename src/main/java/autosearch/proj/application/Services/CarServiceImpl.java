@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import autosearch.proj.application.ApiResponse.ApiResponse;
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Entities.Favorite;
@@ -46,6 +47,7 @@ public class CarServiceImpl implements CarService {
 	@Override
 	public CarDTO convertToDTO(Car car) {
 		CarDTO returnCar = new CarDTO(
+				car.getId(),
 				car.getMake(),
 				car.getModel(),
 				car.getYear(),
@@ -151,6 +153,37 @@ public class CarServiceImpl implements CarService {
 	public List<String> returnMakes(){
 		return carRepository.findDistinctMake();
 	}
+	
+	public List<String> returnModelsByMake(String make){
+		return carRepository.findDistinctModelByMake(make);
+	}
+	
+	//adding favorite to database 
+	public ApiResponse addFavorite(HttpSession session, int carId) {
+		User user = (User)session.getAttribute("loggedIn");
+		
+		
+		if(user == null) {
+			return new ApiResponse(false,"Log in before favoriting");
+		}
+		List<CarDTO> savedFavorites = returnFavorites(session);
+		
+		Car car = carRepository.findCarById(carId);
+		CarDTO newCar = convertToDTO(car);
+		
+		
+		if(savedFavorites.contains(newCar)) {
+				return new ApiResponse(false, "User already favorited this car");
+			}
+		
+		
+		Favorite favorite = new Favorite(user, car);
+		favoriteRepository.save(favorite);
+		return new ApiResponse(true, "Car successfully favorited");
+		
+		
+	}
+
 	
 	
 	
