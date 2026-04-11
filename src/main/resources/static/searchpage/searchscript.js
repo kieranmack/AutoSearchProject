@@ -3,10 +3,16 @@
 //Redoing javascript, can refactor into one method instead of constant event listeners
 //became too much to handle 4/8/2026
 
+//global vars
 const favoriteUrl = new URL('http://localhost:8080/api/search/favorites/')
-const makeDropUrl = new URL('http://localhost:8080/api/makes');
+const makeDropUrl = new URL('http://localhost:8080/api/makes/');
+const modelDropUrl = new URL('http://localhost:8080/api/models/?');
 const searchButton = document.getElementById('searchButton');
 const favButton = document.getElementById('favoritesButton');
+const currentCars = [];
+const sortDiv = document.getElementById('sortDiv');
+
+
 
 
 //search button event listener, will combine all previous methods here to streamline
@@ -66,9 +72,11 @@ searchButton.addEventListener('click', function() {
         .then(response => response.json()) // converts raw JSON to JS object/array
         .then(data => {
 
+            currentCars.length = 0;
+            currentCars.push(...data);
+            console.log(currentCars);
 
-            console.log(data);
-            displayCars(data);
+            displayCars(currentCars, "search");
         })
         .catch(err => console.error(err));
 
@@ -77,7 +85,7 @@ searchButton.addEventListener('click', function() {
 
 
 //displaying cars nicely
-function displayCars(data) {
+function displayCars(data, mode) {
 
     carDiv.innerHTML = "";
     data.forEach(car => {
@@ -86,6 +94,7 @@ function displayCars(data) {
         //for each car in the list, createElements and add it to the div
         const carCard = document.createElement("div");
         carCard.classList.add("car-card");
+
 
         const makeP = document.createElement("p");
         makeP.innerHTML = `Make: ${car.make}`;
@@ -109,30 +118,41 @@ function displayCars(data) {
         priceP.innerHTML = `Price: $${car.price}`;
         carCard.appendChild(priceP);
 
-
-
+		if(mode == "search"){
+        const favEachButton = document.createElement("button");
+        favEachButton.innerHTML = "Favorite this car?";
+        favEachButton.classList.add('favoriteButton');
+        favEachButton.dataset.carId = car.id;
+        carCard.appendChild(favEachButton);
+	}
+		
 
         carDiv.appendChild(carCard)
+
     });
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////
+    sortDiv.style.display = "inline-block";
+    avgButton.style.display = "inline-block";
 
 
 }
 
-//Favorite button event Listener
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//return Favorite button event Listener
 favButton.addEventListener('click', function() {
 
-    const returnVals = document.getElementById('message');
+
 
     fetch(favoriteUrl)
 
         .then(response => response.json())
         .then(data => {
 
-
-            //have to refactor this to display like the other function did. 
-            returnVals.textContent = JSON.stringify(data, null, 2);
+            currentCars.length = 0;
+            currentCars.push(...data);
+            displayCars(currentCars, "favorites");
         })
         .catch(err => console.error(err));
 
@@ -148,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
 
-			console.log(data);
+            console.log(data);
             populateMakeDropdown(data);
 
 
@@ -161,20 +181,155 @@ document.addEventListener('DOMContentLoaded', function() {
 //populate the dropdown when the DOM is loaded, works. 
 function populateMakeDropdown(data) {
 
-	const makeDropdown = document.getElementById('makeSelect');
+    const makeDropdown = document.getElementById('makeSelect');
     data.forEach(make => {
-       
-			const option = new Option(make, make);
-			
-			makeDropdown.appendChild(option);
+
+        const option = new Option(make, make);
+
+        makeDropdown.appendChild(option);
 
 
     });
 
 
+}
 
+//////////////////////////////////////////////////////////////////////////
+
+//need a listener for change of Make, so we know what Models to populate dropdown with. 
+
+const makeDropdown = document.getElementById('makeSelect');
+
+makeDropdown.addEventListener('change', function() {
+
+    modelDropUrl.searchParams.set('make', makeDropdown.value);
+    fetch(modelDropUrl)
+        .then(response => response.json())
+        .then(data => {
+
+            console.log(data);
+            populateModelDropdown(data);
+
+
+
+
+        })
+        .catch(err => console.error(err));
+
+
+});
+
+function populateModelDropdown(data) {
+
+    const modelDropdown = document.getElementById('modelSelect');
+    //while loop removes elements, but keeps default. 
+    while (modelDropdown.options.length > 1) {
+        modelDropdown.remove(1);
+    }
+
+    data.forEach(model => {
+
+        const option = new Option(model, model);
+
+        modelDropdown.appendChild(option);
+
+
+    });
 
 }
+///////////////////////////////////////////////////////////////////////////////////
+///Sort Function Below based on value of select.
+
+
+const sortSelect = document.getElementById('sortSelect');
+
+sortSelect.addEventListener('change', function() {
+
+    const option = document.getElementById('sortSelect').value;
+
+    if (option == "prhl") {
+        currentCars.sort((a, b) => b.price - a.price);
+    } else if (option == "prlh") {
+        currentCars.sort((a, b) => a.price - b.price);
+    } else if (option == "mihl") {
+        currentCars.sort((a, b) => b.mileage - a.mileage);
+    } else if (option == "milh") {
+        currentCars.sort((a, b) => a.mileage - b.mileage);
+    } else if (option == "yrhl") {
+        currentCars.sort((a, b) => Number(b.year) - Number(a.year));
+
+    } else if (option == "yrlh") {
+        currentCars.sort((a, b) => Number(a.year) - Number(b.year));
+
+    }
+    displayCars(currentCars);
+
+
+
+});
+
+/////////////////////////////////////////////////////////////////
+////adding avg button
+
+const avgButton = document.getElementById('avgButton');
+
+avgButton.addEventListener('click', function() {
+    const sum = [];
+
+    currentCars.forEach(car => {
+
+        sum.push(car.price);
+
+    })
+
+    const sumValue = sum.reduce((partialSum, a) => partialSum + a, 0);
+    const avgValueP = document.createElement("p");
+    avgValueP.innerHTML = `Average Price of Selected Cars: $${sumValue / currentCars.length}`;
+    carDiv.appendChild(avgValueP);
+})
+
+//////////////////////////////////////////////////////////////////////////////
+
+////Button for favoriting cars
+
+
+carDiv.addEventListener('click', async function(e) {
+    
+	
+
+    if (e.target.classList.contains('favoriteButton')) {
+        const carId = e.target.dataset.carId;
+		const favP = document.getElementById('favP');
+
+        try {
+            //await method, connects to controller endpoint
+            const response = await fetch(`http://localhost:8080/api/addFavorite?carId=${carId}`, {
+                method: 'POST',
+                
+            });
+			
+			const result = await response.json();
+				
+			if(result.success == false){
+				favP.innerHTML = `Error: ${result.message}`;
+			}else if(result.success == true){
+				favP.innerHTML = `${result.message}`;
+				
+			}
+
+
+        } catch (error) {
+            console.error('Error:', error);
+            favP.innerHTML = `Something went wrong`;
+        }
+
+    }
+
+})
+
+
+
+
 
 
 
