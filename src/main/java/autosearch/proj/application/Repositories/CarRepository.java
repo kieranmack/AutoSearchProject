@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import autosearch.proj.application.Entities.Car;
@@ -16,10 +17,15 @@ import autosearch.proj.application.Entities.Car;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Integer>,
 	JpaSpecificationExecutor<Car> {
+	
+	Car findCarById(int carId);
 
 	List<Car> findAll(Specification<Car> spec);
 	
 	@Query("SELECT DISTINCT c.make from Car c")
 	List<String> findDistinctMake();
+	
+	@Query("SELECT DISTINCT c.model FROM Car c WHERE c.make = :make")
+	List<String> findDistinctModelByMake(@Param("make") String make);
 	
 }
