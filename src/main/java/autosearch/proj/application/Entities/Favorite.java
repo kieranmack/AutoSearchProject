@@ -27,7 +27,14 @@ public class Favorite {
 	@ManyToOne
 	@JoinColumn(name = "cars_id")
 	private Car car;
+	
+	public Favorite() {}
 
+	public Favorite(User user, Car car) {
+		this.user = user;
+		this.car = car;
+	}
+	
 	public User getUser() {
 		return user;
 	}
