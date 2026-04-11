@@ -5,6 +5,7 @@ import java.util.Objects;
 //Car object with only user facing fields, hides things like id, source, and dateadded.
 public class CarDTO {
 
+	private int carId;
 	private String make;
 	private String model;
 	private String year;
@@ -15,8 +16,10 @@ public class CarDTO {
 	public CarDTO() {}
 	//very simple class, will use the constructor to turn entities into these objects 
 	//which will be sent to users
-	public CarDTO(String make, String model, String year, int mileage, double price, 
+	//constructor for data sent to front end, need ID to implement favorite. 
+	public CarDTO(int carId, String make, String model, String year, int mileage, double price, 
 			String source) {
+		this.carId = carId;
 		this.make = make;
 		this.model = model;
 		this.year = year;
@@ -25,7 +28,23 @@ public class CarDTO {
 		this.source = source;
 	}
 	
+	//constructor for scraper to create Cars
+	public CarDTO( String make, String model, String year, int mileage, double price, 
+			String source) {
+		this.make = make;
+		this.model = model;
+		this.year = year;
+		this.mileage = mileage;
+		this.price = price;
+		this.source = source;
+	}
+	public int getId() {
+		return carId;
+	}
 	
+	public void setId(int id) {
+		this.carId = id;
+	}
 	
 	public String getSource() {
 		return source;
