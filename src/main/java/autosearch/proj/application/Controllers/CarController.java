@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import autosearch.proj.application.ApiResponse.ApiResponse;
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Services.CarService;
@@ -59,10 +60,23 @@ public class CarController {
 		return carService.returnFavorites(session);
 	}
 	
-	@GetMapping("/api/makes")
+	@GetMapping("/api/makes/")
 	@ResponseBody
 	public List<String> getMakes(){
 		return carService.returnMakes();
+	}
+	
+	@GetMapping("/api/models/")
+	@ResponseBody
+	public List<String> getModelsByMake(@RequestParam(required = true) String make){
+		return carService.returnModelsByMake(make);
+	}
+	
+	@PostMapping("api/addFavorite")
+	@ResponseBody
+	public ApiResponse addFavorite( @RequestParam(required = true)
+											int carId, HttpSession session) {
+		return carService.addFavorite(session, carId);
 	}
 	
 	
