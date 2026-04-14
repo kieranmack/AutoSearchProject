@@ -1,10 +1,12 @@
 package autosearch.proj.application.Controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Services.ScraperServiceImpl;
 
 @RestController
@@ -21,14 +23,9 @@ public class AdminController {
 	
 	
 		@GetMapping("/adminscrape")
-			public String triggerScrape() {
-			try {
-			scraperServ.scrapeAndSaveSite();
-			return "Scrape Success!";
-		}catch (IOException e) {
-			e.printStackTrace();
-			return "Time to debug" +  e.getMessage();
-		}
+			public List<CarDTO> triggerScrape() throws IOException {
+			
+			return scraperServ.scrapeAndSaveSite();
 			
 		
 		}
