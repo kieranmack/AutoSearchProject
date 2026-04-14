@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import autosearch.proj.application.DTOs.CarDTO;
@@ -34,13 +35,16 @@ public class ScraperServiceImpl {
 	}
 
 	// wrapper method to call all private helper methods
-	public void scrapeAndSaveSite() throws IOException {
+	@Scheduled(cron = "0 0 0 * * *")
+	public List<CarDTO> scrapeAndSaveSite() throws IOException {
 		List<CarDTO> scrapedListA = scrapeSiteA();
 		List<CarDTO> scrapedListB = scrapeSiteB();
 		List<CarDTO> scrapedList = mergeLists(scrapedListA, scrapedListB);
 		List<CarDTO> dbDTOList = getDBCarsAsDTOs();
 
-		compareForDupesAndSave(dbDTOList, scrapedList);
+		return compareForDupesAndSave(dbDTOList, scrapedList);
+		
+		
 
 	}
 
@@ -101,16 +105,20 @@ public class ScraperServiceImpl {
 	// duplicate checking, if not present in the DB List, we can save as a new
 	// entity with
 	// proper attributes.
-	private void compareForDupesAndSave(List<CarDTO> dbListAsDTOs, List<CarDTO> scrapedList) {
+	private List<CarDTO> compareForDupesAndSave(List<CarDTO> dbListAsDTOs, List<CarDTO> scrapedList) {
 
+		List<CarDTO> savedCars = new ArrayList<>();
 		for (CarDTO car : scrapedList) {
 			if (!dbListAsDTOs.contains(car)) {
 				Car newCar = new Car(car.getMake(), car.getModel(), car.getYear(), car.getMileage(), car.getPrice(),
 						car.getSource(), currentDate);
 				carRepo.save(newCar);
+				savedCars.add(car);
+				
 			}
 		}
 
+		return savedCars;
 	}
 
 	// Here is where we create the first list for the scraped cars from siteB
