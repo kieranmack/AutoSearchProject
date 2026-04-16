@@ -8,11 +8,13 @@ const favoriteUrl = new URL('http://localhost:8080/api/search/favorites/')
 const makeDropUrl = new URL('http://localhost:8080/api/makes/');
 const modelDropUrl = new URL('http://localhost:8080/api/models/?');
 const searchButton = document.getElementById('searchButton');
-const favButton = document.getElementById('favoritesButton');
+const favButton = document.getElementById('heartIcon');
 const currentCars = [];
 const sortDiv = document.getElementById('sortDiv');
+const avgButton = document.getElementById('avgButton');
 
-
+///////////////////////////////////////////////////////////////////////////
+////need to save instance of user.  
 
 
 //search button event listener, will combine all previous methods here to streamline
@@ -74,7 +76,7 @@ searchButton.addEventListener('click', function() {
 
             currentCars.length = 0;
             currentCars.push(...data);
-            console.log(currentCars);
+
 
             displayCars(currentCars, "search");
         })
@@ -88,51 +90,64 @@ searchButton.addEventListener('click', function() {
 function displayCars(data, mode) {
 
     carDiv.innerHTML = "";
-    data.forEach(car => {
+
+    if (data.length == 0) {
+        const emptyP = document.createElement("p");
+        emptyP.innerHTML = "No matching cars.";
+        carDiv.appendChild(emptyP);
 
 
-        //for each car in the list, createElements and add it to the div
-        const carCard = document.createElement("div");
-        carCard.classList.add("car-card");
+    } else {
+        data.forEach(car => {
 
 
-        const makeP = document.createElement("p");
-        makeP.innerHTML = `Make: ${car.make}`;
-        carCard.appendChild(makeP);
-
-        const modelP = document.createElement("p");
-        modelP.innerHTML = `Model: ${car.model}`;
-        carCard.appendChild(modelP);
-
-        const yearP = document.createElement("p");
-        yearP.innerHTML = `Year: ${car.year}`;
-        carCard.appendChild(yearP);
+            //for each car in the list, createElements and add it to the div
+            const carCard = document.createElement("div");
+            carCard.classList.add("car-card");
 
 
+            const makeP = document.createElement("p");
+            makeP.innerHTML = `Make: ${car.make}`;
+            carCard.appendChild(makeP);
 
-        const mileageP = document.createElement("p");
-        mileageP.innerHTML = `Mileage: ${car.mileage}`;
-        carCard.appendChild(mileageP);
+            const modelP = document.createElement("p");
+            modelP.innerHTML = `Model: ${car.model}`;
+            carCard.appendChild(modelP);
 
-        const priceP = document.createElement("p");
-        priceP.innerHTML = `Price: $${car.price}`;
-        carCard.appendChild(priceP);
+            const yearP = document.createElement("p");
+            yearP.innerHTML = `Year: ${car.year}`;
+            carCard.appendChild(yearP);
 
-		if(mode == "search"){
-        const favEachButton = document.createElement("button");
-        favEachButton.innerHTML = "Favorite this car?";
-        favEachButton.classList.add('favoriteButton');
-        favEachButton.dataset.carId = car.id;
-        carCard.appendChild(favEachButton);
-	}
-		
 
-        carDiv.appendChild(carCard)
 
-    });
+            const mileageP = document.createElement("p");
+            mileageP.innerHTML = `Mileage: ${car.mileage}`;
+            carCard.appendChild(mileageP);
 
-    sortDiv.style.display = "inline-block";
-    avgButton.style.display = "inline-block";
+            const priceP = document.createElement("p");
+            priceP.innerHTML = `Price: $${car.price}`;
+            carCard.appendChild(priceP);
+
+            if (mode == "search") {
+                const favEachButton = document.createElement("button");
+                favEachButton.innerHTML = "Favorite this car?";
+                favEachButton.classList.add('favoriteButton');
+                favEachButton.dataset.carId = car.id;
+                carCard.appendChild(favEachButton);
+            }
+
+
+            carDiv.appendChild(carCard)
+            sortDiv.style.display = "inline-block";
+            avgButton.style.display = "inline-block";
+
+        });
+
+
+
+
+    }
+
 
 
 }
@@ -152,6 +167,7 @@ favButton.addEventListener('click', function() {
 
             currentCars.length = 0;
             currentCars.push(...data);
+
             displayCars(currentCars, "favorites");
         })
         .catch(err => console.error(err));
@@ -219,6 +235,9 @@ makeDropdown.addEventListener('change', function() {
 
 });
 
+////////////////////////////////////////////////////////////////////////
+//function to populate model dropdown
+
 function populateModelDropdown(data) {
 
     const modelDropdown = document.getElementById('modelSelect');
@@ -271,7 +290,7 @@ sortSelect.addEventListener('change', function() {
 /////////////////////////////////////////////////////////////////
 ////adding avg button
 
-const avgButton = document.getElementById('avgButton');
+
 
 avgButton.addEventListener('click', function() {
     const sum = [];
@@ -294,28 +313,28 @@ avgButton.addEventListener('click', function() {
 
 
 carDiv.addEventListener('click', async function(e) {
-    
-	
+
+
 
     if (e.target.classList.contains('favoriteButton')) {
         const carId = e.target.dataset.carId;
-		const favP = document.getElementById('favP');
+        const favP = document.getElementById('favP');
 
         try {
             //await method, connects to controller endpoint
             const response = await fetch(`http://localhost:8080/api/addFavorite?carId=${carId}`, {
                 method: 'POST',
-                
+
             });
-			
-			const result = await response.json();
-				
-			if(result.success == false){
-				favP.innerHTML = `Error: ${result.message}`;
-			}else if(result.success == true){
-				favP.innerHTML = `${result.message}`;
-				
-			}
+
+            const result = await response.json();
+
+            if (result.success == false) {
+                favP.innerHTML = `Error: ${result.message}`;
+            } else if (result.success == true) {
+                favP.innerHTML = `${result.message}`;
+
+            }
 
 
         } catch (error) {
@@ -328,8 +347,73 @@ carDiv.addEventListener('click', async function(e) {
 })
 
 
+//////////////////////////////////////////////////////////////////////
+/////Adding checking for login and populating userdropdown menu/////////////////////////////////////
 
 
+const userIcon = document.getElementById('userIcon');
+const userDropdown = document.getElementById('userDropdown');
+
+userIcon.addEventListener('click', function() {
+
+    userDropdown.innerHTML = "";
+
+    fetch('http://localhost:8080/user/logcheck', {
+        credentials: "include"
+    })
+
+        .then(response => response.json())
+        .then(data => {
+            if (data.success == false) {
+                //if it's a fail, then we prompt user to register
+                const errorP = document.createElement("p");
+                errorP.innerHTML = "Log in To save your Favorite Cars!"
+                userDropdown.appendChild(errorP);
+                //create new reg button when click on user icon, if not already 
+                //logged in 
+                const registerLink = document.createElement("a");
+                registerLink.innerHTML = "Register?";
+                const logInLink = document.createElement("a");
+				logInLink.innerHTML = "Login"
+                registerLink.onclick = () => {
+                    window.location.href = "/register/register.html";
+                };
+                logInLink.onclick = () => {
+                    window.location.href = "/login/login.html";
+                };
+
+                userDropdown.appendChild(registerLink);
+                userDropdown.appendChild(logInLink);
+
+            } else if (data.success == true) {
+                const successP = document.createElement("p");
+                successP.innerHTML = `Welcome, ${data.data.username}<br>`;
+                userDropdown.appendChild(successP);
+                const logOutButton = document.createElement('button');
+                logOutButton.innerHTML = "Logout";
+
+                logOutButton.onclick = () => {
+                   fetch('http://localhost:8080/user/logout')
+				   .then(response => response.json())
+				   .then(data =>{
+					
+					successP.innerHTML = `Thanks for choosing Autosearch ${data.message}`;
+					
+				   })
+                };
+                userDropdown.appendChild(logOutButton);
+
+            }
+
+
+
+
+
+        })
+
+    //////////////////////////////////////////////////////////////////////////////////////
+
+})
 
 
 
