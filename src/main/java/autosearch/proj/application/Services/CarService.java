@@ -3,6 +3,7 @@ import java.util.List;
 
 
 import autosearch.proj.application.ApiResponse.ApiResponse;
+import autosearch.proj.application.DTOs.AdminStatsDTO;
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 import jakarta.servlet.http.HttpSession;
@@ -33,7 +34,11 @@ public interface CarService {
 	
 	public List<String> returnModelsByMake(String make);
 	
-	public ApiResponse addFavorite(HttpSession session, int carId);
+	public ApiResponse<Void> addFavorite(HttpSession session, int carId);
+	
+	public List<CarDTO> findAdminCars();
+	
+
 	
 	
 	

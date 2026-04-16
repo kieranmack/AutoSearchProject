@@ -73,9 +73,10 @@ public class CarController {
 		return carService.returnModelsByMake(make);
 	}
 	
+	
 	@PostMapping("api/addFavorite")
 	@ResponseBody
-	public ApiResponse addFavorite( @RequestParam(required = true)
+	public ApiResponse<Void> addFavorite( @RequestParam(required = true)
 											int carId, HttpSession session) {
 		return carService.addFavorite(session, carId);
 	}

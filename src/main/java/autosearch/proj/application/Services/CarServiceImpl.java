@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 import autosearch.proj.application.ApiResponse.ApiResponse;
+import autosearch.proj.application.DTOs.AdminStatsDTO;
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Entities.Favorite;
@@ -160,12 +161,12 @@ public class CarServiceImpl implements CarService {
 	}
 	
 	//adding favorite to database 
-	public ApiResponse addFavorite(HttpSession session, int carId) {
+	public ApiResponse<Void> addFavorite(HttpSession session, int carId) {
 		User user = (User)session.getAttribute("loggedIn");
 		
 		
 		if(user == null) {
-			return new ApiResponse(false,"Log in before favoriting");
+			return new ApiResponse<Void>(false,"Log in before favoriting", null);
 		}
 		List<CarDTO> savedFavorites = returnFavorites(session);
 		
@@ -174,16 +175,30 @@ public class CarServiceImpl implements CarService {
 		
 		
 		if(savedFavorites.contains(newCar)) {
-				return new ApiResponse(false, "User already favorited this car");
+				return new ApiResponse<Void>(false, "User already favorited this car", null);
 			}
 		
 		
 		Favorite favorite = new Favorite(user, car);
 		favoriteRepository.save(favorite);
-		return new ApiResponse(true, "Car successfully favorited");
+		return new ApiResponse<>(true, "Car successfully favorited", null);
 		
 		
 	}
+	
+	/////////////////////////////////////////////////////////////
+	////Returning most recent 10 cars for admin
+	
+	public List<CarDTO> findAdminCars(){
+		List<Car> dbList = carRepository.findTop10ByOrderByDateAddedDesc();
+		
+		List<CarDTO> dtoList = convertToDTOList(dbList);
+		
+		return dtoList;
+		
+	}
+	
+	
 
 	
 	
