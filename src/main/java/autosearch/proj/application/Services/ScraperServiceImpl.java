@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import autosearch.proj.application.DTOs.CarDTO;
+import autosearch.proj.application.DTOs.ScrapeSummaryDTO;
 import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Repositories.CarRepository;
 
@@ -36,13 +37,21 @@ public class ScraperServiceImpl {
 
 	// wrapper method to call all private helper methods
 	@Scheduled(cron = "0 0 0 * * *")
-	public List<CarDTO> scrapeAndSaveSite() throws IOException {
+	public ScrapeSummaryDTO scrapeAndSaveSite() throws IOException {
+		double startTime = System.nanoTime();
 		List<CarDTO> scrapedListA = scrapeSiteA();
 		List<CarDTO> scrapedListB = scrapeSiteB();
 		List<CarDTO> scrapedList = mergeLists(scrapedListA, scrapedListB);
 		List<CarDTO> dbDTOList = getDBCarsAsDTOs();
-
-		return compareForDupesAndSave(dbDTOList, scrapedList);
+		int carsAdded = compareForDupesAndSave(dbDTOList, scrapedList);
+		
+		//end time to calculate method execution time
+		double endTime = System.nanoTime();
+		
+		//convert to seconds
+		double allotedTime = (endTime - startTime) / 1000000000.0;
+		Date completedDate = new Date();
+		return new ScrapeSummaryDTO(carsAdded, allotedTime, completedDate);
 		
 		
 
@@ -105,20 +114,22 @@ public class ScraperServiceImpl {
 	// duplicate checking, if not present in the DB List, we can save as a new
 	// entity with
 	// proper attributes.
-	private List<CarDTO> compareForDupesAndSave(List<CarDTO> dbListAsDTOs, List<CarDTO> scrapedList) {
+	private int compareForDupesAndSave(List<CarDTO> dbListAsDTOs, List<CarDTO> scrapedList) {
 
+		int carCount = 0;
 		List<CarDTO> savedCars = new ArrayList<>();
 		for (CarDTO car : scrapedList) {
 			if (!dbListAsDTOs.contains(car)) {
 				Car newCar = new Car(car.getMake(), car.getModel(), car.getYear(), car.getMileage(), car.getPrice(),
 						car.getSource(), currentDate);
+				carCount++;
 				carRepo.save(newCar);
 				savedCars.add(car);
 				
 			}
 		}
 
-		return savedCars;
+		return carCount;
 	}
 
 	// Here is where we create the first list for the scraped cars from siteB
