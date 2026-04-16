@@ -1,29 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard</title>
-</head>
 <body>
-	<div class = "topLabel">
-	<p>AUTOSEARCH | ADMIN</p>
-	</div>
-	
-	<div id = "scrape">
-	<p id = "timer"> </p>
-	<button id = "manualTrigger">Trigger Scrape</button>
-	</div>
-	
-	<div class = "dbEntities">
-	<p>Database Entities</p>
-	
-	<p>Users</p>
-	<p>Cars</p>
-	<p>Favorites</p>
-	
-	</div>
 
+<div class="topnav">
+    <h2>AUTOSEARCH | ADMIN</h2>
+</div>
 
+<div class="container">
+
+    <!-- Scrape Section -->
+    <div class="card">
+        <h3>Scraper Control</h3>
+        <p id="timer">Last Run: --</p>
+        <button id="manualTrigger">Trigger Scrape</button>
+    </div>
+
+    <!-- Dashboard Stats -->
+    <div class="dashboard">
+
+        <div class="card stat">
+            <h3>Users</h3>
+            <p id="userCount">0</p>
+        </div>
+
+        <div class="card stat">
+            <h3>Cars</h3>
+            <p id="carCount">0</p>
+        </div>
+
+        <div class="card stat">
+            <h3>Favorites</h3>
+            <p id="favCount">0</p>
+        </div>
+
+    </div>
+
+    <!-- Data Table Section -->
+    <div class="card">
+        <h3>10 Most Recent Cars</h3>
+        <table id="carTable">
+            <thead>
+                <tr>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- JS will populate -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<p id="scrapeSummary"></p>
+
+<script src="/admindash/admin.js"></script>
 </body>
-<script src = "/admindash/admin.js"></script>
-
-</html>
