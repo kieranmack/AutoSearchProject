@@ -28,6 +28,7 @@ public class UserController {
 		this.userService = userService;
 	}
 	
+	
 	@GetMapping("/admindashboard/")
 	@ResponseBody
 	public List<UserDTO> returnUsersSpec(
@@ -40,7 +41,7 @@ public class UserController {
 	//register endpoint
 	@PostMapping("/user/register/")
 	@ResponseBody
-	public ApiResponse registerUser(
+	public ApiResponse<Void> registerUser(
 			@RequestParam String username,
 			@RequestParam String password,
 			@RequestParam String email) {
@@ -50,15 +51,26 @@ public class UserController {
 	//user login endpoint
 	@PostMapping("/user/login/")
 	@ResponseBody
-	public ApiResponse loginUser(
+	public ApiResponse<Void> loginUser(
 			@RequestParam String username,
 			@RequestParam String password,
 			HttpSession session) {
 		return userService.loginUser(username, password, session);
 	}
 	
+	//endpoint for checking if logged in. 
+	@GetMapping("/user/logcheck")
+	@ResponseBody
+	public ApiResponse<UserDTO> isLoggedIn(HttpSession session) {
+		return userService.isLoggedIn(session);
+	}
 	
-	
+	//endpoint for logging out
+	@GetMapping("/user/logout")
+	@ResponseBody
+	public ApiResponse<Void> logOut(HttpSession session){
+		return userService.logOut(session);
+	}
 	
 	
 	
