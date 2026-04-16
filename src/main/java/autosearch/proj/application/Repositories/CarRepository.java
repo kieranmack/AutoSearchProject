@@ -28,4 +28,6 @@ public interface CarRepository extends JpaRepository<Car, Integer>,
 	@Query("SELECT DISTINCT c.model FROM Car c WHERE c.make = :make")
 	List<String> findDistinctModelByMake(@Param("make") String make);
 	
+	List<Car> findTop10ByOrderByDateAddedDesc();
+	
 }
