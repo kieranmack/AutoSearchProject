@@ -7,15 +7,28 @@
 const favoriteUrl = new URL('http://localhost:8080/api/search/favorites/')
 const makeDropUrl = new URL('http://localhost:8080/api/makes/');
 const modelDropUrl = new URL('http://localhost:8080/api/models/?');
+const loginCheckUrl = new URL('http://localhost:8080/user/logcheck');
 const searchButton = document.getElementById('searchButton');
 const favButton = document.getElementById('heartIcon');
 const currentCars = [];
 const sortDiv = document.getElementById('sortDiv');
 const avgButton = document.getElementById('avgButton');
+const favPopUp = document.getElementById('favPopUp');
+let user = null;
+
 
 ///////////////////////////////////////////////////////////////////////////
 ////need to save instance of user.  
+async function loginCheck() {
+    fetch(loginCheckUrl)
+        .then(response => response.json())
+        .then(data => {
 
+            //instance of user success, false = not logged, true = does. 
+            user = data;
+            console.log(user);
+        })
+}
 
 //search button event listener, will combine all previous methods here to streamline
 /////////////////////////////////////////////////////////////////////////////////////
@@ -95,58 +108,60 @@ function displayCars(data, mode) {
         const emptyP = document.createElement("p");
         emptyP.innerHTML = "No matching cars.";
         carDiv.appendChild(emptyP);
-
-
-    } else {
-        data.forEach(car => {
-
-
-            //for each car in the list, createElements and add it to the div
-            const carCard = document.createElement("div");
-            carCard.classList.add("car-card");
-
-
-            const makeP = document.createElement("p");
-            makeP.innerHTML = `Make: ${car.make}`;
-            carCard.appendChild(makeP);
-
-            const modelP = document.createElement("p");
-            modelP.innerHTML = `Model: ${car.model}`;
-            carCard.appendChild(modelP);
-
-            const yearP = document.createElement("p");
-            yearP.innerHTML = `Year: ${car.year}`;
-            carCard.appendChild(yearP);
-
-
-
-            const mileageP = document.createElement("p");
-            mileageP.innerHTML = `Mileage: ${car.mileage}`;
-            carCard.appendChild(mileageP);
-
-            const priceP = document.createElement("p");
-            priceP.innerHTML = `Price: $${car.price}`;
-            carCard.appendChild(priceP);
-
-            if (mode == "search") {
-                const favEachButton = document.createElement("button");
-                favEachButton.innerHTML = "Favorite this car?";
-                favEachButton.classList.add('favoriteButton');
-                favEachButton.dataset.carId = car.id;
-                carCard.appendChild(favEachButton);
-            }
-
-
-            carDiv.appendChild(carCard)
-            sortDiv.style.display = "inline-block";
-            avgButton.style.display = "inline-block";
-
-        });
-
-
-
+        sortDiv.style.display = "none";
 
     }
+
+    if (mode === "search" && data.length > 0) {
+        sortDiv.style.display = "flex";
+
+    }
+
+
+    data.forEach(car => {
+
+
+        //for each car in the list, createElements and add it to the div
+        const carCard = document.createElement("div");
+        carCard.classList.add("car-card");
+
+
+        const makeP = document.createElement("p");
+        makeP.innerHTML = `Make: ${car.make}`;
+        carCard.appendChild(makeP);
+
+        const modelP = document.createElement("p");
+        modelP.innerHTML = `Model: ${car.model}`;
+        carCard.appendChild(modelP);
+
+        const yearP = document.createElement("p");
+        yearP.innerHTML = `Year: ${car.year}`;
+        carCard.appendChild(yearP);
+
+
+
+        const mileageP = document.createElement("p");
+        mileageP.innerHTML = `Mileage: ${car.mileage}`;
+        carCard.appendChild(mileageP);
+
+        const priceP = document.createElement("p");
+        priceP.innerHTML = `Price: $${car.price}`;
+        carCard.appendChild(priceP);
+
+        if (mode == "search") {
+            const favEachButton = document.createElement("i");
+            favEachButton.classList.add("fa-solid", "fa-heart", "favorite-icon");
+            favEachButton.dataset.carId = car.id;
+            carCard.appendChild(favEachButton);
+
+
+        }
+
+
+        carDiv.appendChild(carCard)
+
+
+    });
 
 
 
@@ -157,20 +172,32 @@ function displayCars(data, mode) {
 
 //return Favorite button event Listener
 favButton.addEventListener('click', function() {
+	
+	
+    if (user.success == false) {
+        favPopUp.textContent = `${user.message}`;
+        favPopUp.classList.add("error");
+        favPopUp.classList.remove("success");
+        
 
+		favPopUp.classList.add("show");
+        setTimeout(() => {
+			favPopUp.classList.remove('show');
+        }, 2000);
+    } else {
+        fetch(favoriteUrl)
 
+            .then(response => response.json())
+            .then(data => {
 
-    fetch(favoriteUrl)
+                currentCars.length = 0;
+                currentCars.push(...data);
 
-        .then(response => response.json())
-        .then(data => {
+                displayCars(currentCars, "favorites");
+            })
+            .catch(err => console.error(err));
 
-            currentCars.length = 0;
-            currentCars.push(...data);
-
-            displayCars(currentCars, "favorites");
-        })
-        .catch(err => console.error(err));
+    }
 
 });
 
@@ -178,7 +205,7 @@ favButton.addEventListener('click', function() {
 
 //Adding a dynamic dropdown create element with data from the DB
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
 
     fetch(makeDropUrl)
         .then(response => response.json())
@@ -192,6 +219,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(err => console.error(err));
 
 
+    //check for login at page load. 
+    loginCheck();
 });
 
 //populate the dropdown when the DOM is loaded, works. 
@@ -281,7 +310,7 @@ sortSelect.addEventListener('change', function() {
         currentCars.sort((a, b) => Number(a.year) - Number(b.year));
 
     }
-    displayCars(currentCars);
+    displayCars(currentCars, "search");
 
 
 
@@ -294,6 +323,7 @@ sortSelect.addEventListener('change', function() {
 
 avgButton.addEventListener('click', function() {
     const sum = [];
+    const avgValueP = document.getElementById('AvgCalc')
 
     currentCars.forEach(car => {
 
@@ -302,9 +332,10 @@ avgButton.addEventListener('click', function() {
     })
 
     const sumValue = sum.reduce((partialSum, a) => partialSum + a, 0);
-    const avgValueP = document.createElement("p");
-    avgValueP.innerHTML = `Average Price of Selected Cars: $${sumValue / currentCars.length}`;
-    carDiv.appendChild(avgValueP);
+
+	const avg = sumValue / currentCars.length;
+    avgValueP.innerHTML = `Average Price of Selected Cars: $${avg.toFixed(2)}`;
+
 })
 
 //////////////////////////////////////////////////////////////////////////////
@@ -316,9 +347,9 @@ carDiv.addEventListener('click', async function(e) {
 
 
 
-    if (e.target.classList.contains('favoriteButton')) {
+    if (e.target.classList.contains('favorite-icon')) {
         const carId = e.target.dataset.carId;
-        const favP = document.getElementById('favP');
+		
 
         try {
             //await method, connects to controller endpoint
@@ -329,17 +360,31 @@ carDiv.addEventListener('click', async function(e) {
 
             const result = await response.json();
 
+            console.log(result);
+
             if (result.success == false) {
-                favP.innerHTML = `Error: ${result.message}`;
+                favPopUp.textContent = `Error: ${result.message}`;
+                favPopUp.classList.add("error");
+                favPopUp.classList.remove("success");
             } else if (result.success == true) {
-                favP.innerHTML = `${result.message}`;
+                favPopUp.textContent = `${result.message}`;
+                favPopUp.classList.add("success");
+                favPopUp.classList.remove("error")
 
             }
+			
+			favPopUp.classList.add('show');
+
+           
+
+            setTimeout(() => {
+                favPopUp.classList.remove("show");
+            }, 2000);
 
 
         } catch (error) {
             console.error('Error:', error);
-            favP.innerHTML = `Something went wrong`;
+            favPopUp.textContent = `Something went wrong`;
         }
 
     }
@@ -372,9 +417,11 @@ userIcon.addEventListener('click', function() {
                 //create new reg button when click on user icon, if not already 
                 //logged in 
                 const registerLink = document.createElement("a");
-                registerLink.innerHTML = "Register?";
+                registerLink.id = "registerLink";
+                registerLink.innerHTML = "Register? ";
                 const logInLink = document.createElement("a");
-				logInLink.innerHTML = "Login"
+                logInLink.id = "loginLink";
+                logInLink.innerHTML = "Login"
                 registerLink.onclick = () => {
                     window.location.href = "/register/register.html";
                 };
@@ -390,26 +437,27 @@ userIcon.addEventListener('click', function() {
                 successP.innerHTML = `Welcome, ${data.data.username}<br>`;
                 userDropdown.appendChild(successP);
                 const logOutButton = document.createElement('button');
+                logOutButton.id = "logoutButton";
                 logOutButton.innerHTML = "Logout";
 
                 logOutButton.onclick = () => {
-                   fetch('http://localhost:8080/user/logout')
-				   .then(response => response.json())
-				   .then(data =>{
-					
-					successP.innerHTML = `Thanks for choosing Autosearch ${data.message}`;
-					
-				   })
+                    fetch('http://localhost:8080/user/logout')
+                        .then(response => response.json())
+                        .then(data => {
+
+                            successP.innerHTML = `Thanks for choosing Autosearch ${data.message}`;
+							logOutButton.style.display = "none";
+
+                        })
                 };
                 userDropdown.appendChild(logOutButton);
 
             }
 
 
-
-
-
         })
+
+    userDropdown.classList.toggle("show");
 
     //////////////////////////////////////////////////////////////////////////////////////
 

@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="search.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="searchnew.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <title>Search Screen</title>
 </head>
 <body>
 	<div class=topnav>
-		<a href="/index.html">AUTOSEARCH |</a> 
-		<i class="fa-solid fa-heart" id = "heartIcon" title = "View Favorites!"></i>
-		<i class="fa-solid fa-user user-icon" id="userIcon"></i>
-		
-		<div id="userDropdown"class = "dropdown-hidden">
-		
-		
+		<a href="/index.html">AUTOSEARCH |</a>
+		<div class="nav-right">
+			<i class="fa-solid fa-heart" id="heartIcon" title="View Favorites!"></i>
+			<i class="fa-solid fa-user user-icon" id="userIcon"></i>
+
+			<div id="userDropdown" class="dropdown-hidden"></div>
+
 		</div>
 	</div>
 	<h2>Select Below to Find Info on Used Cars</h2>
 	<div class="carParams">
-		<label for="makeSelect">Choose Make:</label> <select name="cars"
-			id="makeSelect">
-			<option value="default">--Any Make--</option>
-		</select> <label for="modelSelect">Choose Model:</label> <select name="cars"
+		<div class="field">
+			<label for="makeSelect">Choose Make:</label> <select name="cars"
+				id="makeSelect">
+				<option value="default">--Any Make--</option>
+			</select>
+		</div>
+		<div class="field">
+		<label for="modelSelect">Choose Model:</label> <select name="cars"
 			id="modelSelect">
 			<option value="default">--Any Model--</option>
 
-		</select> <label for="yearSelect">Choose Year:</label> <select name="cars"
+		</select>
+
+	</div>
+	<div class="field">
+		<label for="yearSelect">Choose Year:</label> <select name="cars"
 			id="yearSelect">
 			<option value="default">--Years--</option>
 			<option value="1960-1969">1980-1989</option>
@@ -36,40 +45,41 @@
 			<option value="2010-2019">2010-2019</option>
 			<option value="2020-2026">2020-2026</option>
 		</select>
-		<!-- -------------------------------------------------------------------------------- -->
+	</div>
+	<!-- -------------------------------------------------------------------------------- -->
 
+	<div class="field">
 		<label for="priceSelect">Price:</label> <select id="priceSelect">
 			<option value="greater">Greater than</option>
 			<option value="less">Less than</option>
 			<option value="equal">Equal to</option>
 		</select> <input type="number" id="priceValue" placeholder="Enter price:">
+	</div>
 
+	<div class="field">
 
 		<label for="mileageSelect">Mileage:</label> <select id="mileageSelect">
 			<option value="greater">Greater than</option>
 			<option value="less">Less than</option>
 			<option value="equal">Equal to</option>
 		</select> <input type="number" id="mileageValue" placeholder="Enter mileage">
-
 	</div>
+	
 
-	<p id="favP"></p>
+	
 
-	<br>
-	<br>
 
 	<div>
 		<button id="searchButton">Execute Search</button>
 
-		
+
 
 		<p id="message"></p>
 	</div>
+	</div>
+	<div id = "favPopUp"></div>
 
-
-	<div id="carDiv"></div>
-
-	<div id="sortDiv" style="display: none">
+<div id="sortDiv" style= "display: none">
 		<label for="sortSelect">Sort List:</label> <select name="sort"
 			id="sortSelect">
 			<option value="default">--No Conditions--</option>
@@ -81,11 +91,17 @@
 			<option value="yrlh">Year Old to New:</option>
 
 		</select>
+	
+
+	<button id="avgButton">Calculate
+		Average:</button>
+	<p id = "AvgCalc"></p>
 	</div>
 
-	<button id="avgButton" style="display: none">Calculate
-		Average:</button>
 
+	<div id="carDiv"></div>
+
+	
 	<script src="searchscript.js"></script>
 
 

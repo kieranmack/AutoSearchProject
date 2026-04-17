@@ -1,0 +1,305 @@
+/*CSS SEARCH PAGE*/
+h2 {
+	text-align: center;
+	font-weight: 600;
+	color: #333;
+	margin-top: 30px;
+}
+
+.topnav {
+	background-color: #333;
+	display: flex;
+	align-items: center;
+	padding: 0 10px;
+}
+
+/* right icons */
+.nav-right {
+	margin-left: auto;
+	display: flex;
+	gap: 15px;
+	align-items: center;
+}
+
+/* links */
+.topnav a {
+	color: #f2f2f2;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 17px;
+	transform: translateY(10px);
+	transition: 0.2s ease;
+}
+
+/* icons */
+#heartIcon, #userIcon {
+	font-size: 22px;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background-color 0.2s ease;
+	color: white;
+}
+
+/* hover */
+#heartIcon:hover {
+	color: red;
+	background-color: #ddd;
+}
+
+#userIcon:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+.topnav a:hover {
+	background-color: white;
+	color: black;
+}
+
+.carParams {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	width: 350px;
+	padding: 20px;
+	border: 2px solid black;
+	margin: 40px auto;
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.field:hover {
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+input, select {
+	padding: 10px 12px;
+	border-radius: 8px;
+	border: 1px solid #d0d5dd;
+	font-size: 14px;
+	transition: all 0.2s ease;
+	background-color: #f9fafb;
+}
+
+input:focus, select:focus {
+	outline: none;
+	border-color: #4a90e2;
+	background-color: white;
+	box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+}
+
+label {
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+#searchButton {
+	width: 100%;
+	padding: 12px;
+	border: none;
+	border-radius: 8px;
+	background: linear-gradient(135deg, #4a90e2, #357abd);
+	color: white;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+/* hover */
+#searchButton:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* click */
+#searchButton:active {
+	transform: scale(0.98);
+}
+
+#sortDiv {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+	flex-direction: column; width : 100%;
+	margin: 25px auto;
+	padding: 10px;
+	background: #f9fafb;
+	border-radius: 10px;
+	background: linear-gradient(135deg, #eef2f7, #dfe6ee);
+	width: 100%;
+}
+
+#avgButton {
+	padding: 10px 14px;
+	border: none;
+	border-radius: 8px;
+	background: #4a90e2;
+	color: white;
+	cursor: pointer;
+	transition: 0.2s ease;
+}
+
+#avgButton:hover {
+	background: #357abd;
+	transform: scale(1.1);
+}
+
+#carDiv {
+	width: 90%;
+	max-width: 900px;
+	margin: 30px auto;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 20px;
+}
+
+.car-card {
+	background: white;
+	padding: 16px;
+	border-radius: 14px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+
+	border: 1px solid #eef2f7;
+	
+	
+}
+
+.car-card:hover {
+	transform: translateY(-10px);
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+	
+}
+
+.car-card h3 {
+	margin: 0 0 10px;
+}
+
+.car-card p {
+	margin: 0;
+	color: #4b5563;
+	font-size: 14px;
+}
+
+.favorite-icon {
+  font-size: 20px;
+  cursor: pointer;
+  color: #ccc;
+  transition: all 0.2s ease;
+}
+
+.favorite-icon:hover {
+  transform: scale(1.1);
+  color: #ff4d4d;
+}
+
+.favorite-icon.active {
+  color: #ff4d4d;
+}
+
+#favPopUp {
+  position: fixed;
+  top: 40px;
+  right: 20px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  color: white;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+
+  pointer-events: none;
+  z-index: 9999;
+}
+
+
+#favPopUp.success {
+  background: #2ecc71;
+}
+
+#favPopUp.error {
+  background: #e74c3c;
+}
+
+#favPopUp.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#userDropdown {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+
+  width: 200px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+  padding: 10px;
+  z-index: 1000;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* visible state */
+#userDropdown.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* logout button*/
+#logoutButton{
+	padding: 10px 14px;
+	border: none;
+	border-radius: 8px;
+	background: red;
+	color: white;
+	cursor: pointer;
+	transition: 0.2s ease;
+}
+
+#logoutButton:hover{
+	
+	transform: scale(1.1);
+	font-weight: 300px;
+}
+
+#loginLink,
+#registerLink{
+	color: blue;
+}
+
+
+#registerLink:hover,
+#loginLink:hover{
+	
+	cursor: pointer;
+}
+
+
+body {
+	margin: 0;
+	font-family: 'Segoe UI', Tahoma, sans-serif;
+	background: linear-gradient(135deg, #eef2f7, #dfe6ee);
+}

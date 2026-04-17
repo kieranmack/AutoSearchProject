@@ -1,6 +1,10 @@
 
 
 //Javascript File for login User
+document.addEventListener('DOMContentLoaded', function(){
+	const loginButton = document.getElementById('loginButton');
+	loginButton.style.display = "none";
+})
 	document.getElementById('loginForm').addEventListener('submit', async function(event) {
    	 	event.preventDefault(); 
 		
