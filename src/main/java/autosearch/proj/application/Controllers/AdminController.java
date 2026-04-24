@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import autosearch.proj.application.DTOs.AdminStatsDTO;
 import autosearch.proj.application.DTOs.CarDTO;
 import autosearch.proj.application.DTOs.ScrapeSummaryDTO;
+import autosearch.proj.application.Entities.Car;
 import autosearch.proj.application.Services.AdminService;
 import autosearch.proj.application.Services.CarService;
 import autosearch.proj.application.Services.ScraperServiceImpl;
@@ -28,6 +29,8 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+	
+	
 
 	// admincontroller constructor
 	public AdminController(ScraperServiceImpl scraperServ) {
@@ -35,17 +38,23 @@ public class AdminController {
 	}
 	// endpoint for triggering scrape manually, will add scheduled later on
 
+	@GetMapping("/scrapesummary")
+	public ScrapeSummaryDTO scrapeSummary(){
+		return scraperServ.getSummary();
+	}
+	
+	
 	@GetMapping("/adminscrape")
-	public ScrapeSummaryDTO triggerScrape() throws IOException {
+	public void triggerScrape() throws IOException {
 
-		return scraperServ.scrapeAndSaveSite();
+		scraperServ.scrapeAndSaveSite();
 
 	}
 
 	//returns 10 most recent cars
 	@GetMapping("/admin/getcars")
 	@ResponseBody
-	public List<CarDTO> getCars() {
+	public List<Car> getCars() {
 
 		return carService.findAdminCars();
 	}

@@ -24,6 +24,7 @@ public class ScraperServiceImpl {
 	// car repo object for making calls to repository
 	private final CarRepository carRepo;
 	private final CarService carService;
+	private ScrapeSummaryDTO scrapeSummary;
 
 	Date currentDate = new Date();
 	String sourceA = "siteA.html";
@@ -51,7 +52,10 @@ public class ScraperServiceImpl {
 		//convert to seconds
 		double allotedTime = (endTime - startTime) / 1000000000.0;
 		Date completedDate = new Date();
-		return new ScrapeSummaryDTO(carsAdded, allotedTime, completedDate);
+		ScrapeSummaryDTO scrapeSummary = new ScrapeSummaryDTO(carsAdded, 
+											allotedTime, completedDate);
+		this.scrapeSummary = scrapeSummary;
+		return scrapeSummary;
 		
 		
 
@@ -193,5 +197,14 @@ public class ScraperServiceImpl {
 		}
 		return scrapedA;
 	}
+	
+	//getter and setter for scrape summary
+	public void setSummary(ScrapeSummaryDTO summary) {
+        this.scrapeSummary = summary;
+    }
+
+    public ScrapeSummaryDTO getSummary() {
+        return scrapeSummary;
+    }
 
 }
