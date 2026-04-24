@@ -15,6 +15,9 @@ const sortDiv = document.getElementById('sortDiv');
 const avgButton = document.getElementById('avgButton');
 const favPopUp = document.getElementById('favPopUp');
 let user = null;
+const userFavorites = document.getElementById('userFavorites');
+userFavorites.style.display = "none";
+const messageP = document.getElementById('message');
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -102,13 +105,35 @@ searchButton.addEventListener('click', function() {
 //displaying cars nicely
 function displayCars(data, mode) {
 
+	
+	userFavorites.innerHTML = "";
+	userFavorites.style.display = "none";
     carDiv.innerHTML = "";
+	messageP.innerHTML = "";
+	
+	if(data.length == 0 && mode == "favorites"){
+		messageP.innerHTML = "You have no favorites, try it out!";
+		messageP.classList.add('show');
+		sortDiv.style.display = "none";
+		setTimeout(() => {
+							messageP.classList.remove('show');
+						
+				        }, 2000);
+			return;
+		
+	}
 
     if (data.length == 0) {
-        const emptyP = document.createElement("p");
-        emptyP.innerHTML = "No matching cars.";
-        carDiv.appendChild(emptyP);
+       
+        messageP.innerHTML = "No matching cars, try again.";
+     	messageP.classList.add('show');
         sortDiv.style.display = "none";
+		
+		setTimeout(() => {
+					messageP.classList.remove('show');
+				
+		        }, 2000);
+		return;
 
     }
 
@@ -147,15 +172,30 @@ function displayCars(data, mode) {
         const priceP = document.createElement("p");
         priceP.innerHTML = `Price: $${car.price}`;
         carCard.appendChild(priceP);
+		
+		const sourceLink = document.createElement("a");
+		sourceLink.innerHTML = `Source: ${car.source}`;
+		carCard.appendChild(sourceLink);
 
-        if (mode == "search") {
-            const favEachButton = document.createElement("i");
+        if (mode == "search" || mode == "favorites") {
+			const favEachButton = document.createElement("i");
             favEachButton.classList.add("fa-solid", "fa-heart", "favorite-icon");
             favEachButton.dataset.carId = car.id;
-            carCard.appendChild(favEachButton);
+            
 
+			if(mode == "favorites"){
+				favEachButton.classList.add('active');
+			}
+			
+			carCard.appendChild(favEachButton);
 
         }
+		
+		if(mode == "favorites"){
+			carCard.classList.add('favorited');
+			userFavorites.innerHTML = `${user.data.username}'s favorites:`;
+			userFavorites.style.display = "block";
+		}
 
 
         carDiv.appendChild(carCard)
@@ -175,7 +215,7 @@ favButton.addEventListener('click', function() {
 	
 	
     if (user.success == false) {
-        favPopUp.textContent = `${user.message}`;
+        favPopUp.textContent = `Log in or Register to unlock this feature!`;
         favPopUp.classList.add("error");
         favPopUp.classList.remove("success");
         
@@ -345,51 +385,89 @@ avgButton.addEventListener('click', function() {
 
 carDiv.addEventListener('click', async function(e) {
 
-
-
     if (e.target.classList.contains('favorite-icon')) {
+
         const carId = e.target.dataset.carId;
-		
 
-        try {
-            //await method, connects to controller endpoint
-            const response = await fetch(`http://localhost:8080/api/addFavorite?carId=${carId}`, {
-                method: 'POST',
+        //checking current state, is it "active"
+        const isActive = e.target.classList.contains('active');
 
-            });
+        if (isActive) {
 
-            const result = await response.json();
+           //if active remove favorite
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/api/removeFavorite?carId=${carId}`,{
+                    
+                        method: 'DELETE'
+                });
 
-            console.log(result);
+                const result = await response.json();
+                console.log(result);
 
-            if (result.success == false) {
-                favPopUp.textContent = `Error: ${result.message}`;
-                favPopUp.classList.add("error");
-                favPopUp.classList.remove("success");
-            } else if (result.success == true) {
-                favPopUp.textContent = `${result.message}`;
-                favPopUp.classList.add("success");
-                favPopUp.classList.remove("error")
+                if (result.success == false) {
+                    favPopUp.textContent = `${result.message}`;
+                    favPopUp.classList.add("error");
+                    favPopUp.classList.remove("success");
+                } else {
+                    favPopUp.textContent = `${result.message}`;
+                    favPopUp.classList.add("success");
+                    favPopUp.classList.remove("error");
+                }
 
+                favPopUp.classList.add("show");
+
+                setTimeout(() => {
+                    favPopUp.classList.remove("show");
+                }, 2000);
+				
+				display
+				
+
+            } catch (error) {
+                console.error('Error:', error);
+                favPopUp.textContent = `Something went wrong`;
+                favPopUp.classList.add("show");
             }
-			
-			favPopUp.classList.add('show');
 
-           
+        } else {
 
-            setTimeout(() => {
-                favPopUp.classList.remove("show");
-            }, 2000);
+            // if not active, add favorite
+            try {
+                const response = await fetch(
+                    `http://localhost:8080/api/addFavorite?carId=${carId}`,
+                    {
+                        method: 'POST'
+                    }
+                );
 
+                const result = await response.json();
+                console.log(result);
 
-        } catch (error) {
-            console.error('Error:', error);
-            favPopUp.textContent = `Something went wrong`;
+                if (result.success == false) {
+                    favPopUp.textContent = `${result.message}`;
+                    favPopUp.classList.add("error");
+                    favPopUp.classList.remove("success");
+                } else {
+                    favPopUp.textContent = `${result.message}`;
+                    favPopUp.classList.add("success");
+                    favPopUp.classList.remove("error");
+                }
+
+                favPopUp.classList.add("show");
+
+                setTimeout(() => {
+                    favPopUp.classList.remove("show");
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error:', error);
+                favPopUp.textContent = `Something went wrong`;
+                favPopUp.classList.add("show");
+            }
         }
-
     }
-
-})
+});
 
 
 //////////////////////////////////////////////////////////////////////
