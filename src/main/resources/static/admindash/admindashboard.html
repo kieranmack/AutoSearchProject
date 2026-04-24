@@ -1,59 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="/admindash/admin.css">
+</head>
+
 <body>
+
 
 <div class="topnav">
     <h2>AUTOSEARCH | ADMIN</h2>
 </div>
 
+
 <div class="container">
 
-    <!-- Scrape Section -->
-    <div class="card">
-        <h3>Scraper Control</h3>
-        <p id="timer">Last Run: --</p>
-        <button id="manualTrigger">Trigger Scrape</button>
+    
+    <div class="left-panel">
+
+       
+        <div class="scrape-box">
+            <p id="timer">Next scrape in: --</p>
+            <button id="manualTrigger">Trigger Scrape</button>
+        </div>
+
+     
+        <p id="scrapeSummary">Last Recorded Scrape: </p>
+
+      
+        <div class="table-section">
+            <h3>10 Most Recent Cars</h3>
+
+            <table id="carTable">
+                <thead>
+                    <tr>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Year</th>
+                        <th>Price</th>
+                        <th>Added Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- JS populates -->
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
-    <!-- Dashboard Stats -->
-    <div class="dashboard">
+    
+    <div class="right-panel">
 
-        <div class="card stat">
-            <h3>Users</h3>
-            <p id="userCount">0</p>
-        </div>
+        <h3>System Stats</h3>
 
-        <div class="card stat">
-            <h3>Cars</h3>
-            <p id="carCount">0</p>
-        </div>
+        <p><strong>Users:</strong> <span id="userCount">0</span></p>
+        <p><strong>Cars:</strong> <span id="carCount">0</span></p>
+        <p><strong>Favorites:</strong> <span id="favCount">0</span></p>
 
-        <div class="card stat">
-            <h3>Favorites</h3>
-            <p id="favCount">0</p>
-        </div>
-
-    </div>
-
-    <!-- Data Table Section -->
-    <div class="card">
-        <h3>10 Most Recent Cars</h3>
-        <table id="carTable">
-            <thead>
-                <tr>
-                    <th>Make</th>
-                    <th>Model</th>
-                    <th>Year</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- JS will populate -->
-            </tbody>
-        </table>
     </div>
 
 </div>
 
-<p id="scrapeSummary"></p>
-
+<!-- Scripts -->
 <script src="/admindash/admin.js"></script>
+
 </body>
+</html>
