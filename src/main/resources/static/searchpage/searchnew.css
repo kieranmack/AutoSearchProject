@@ -155,6 +155,58 @@ label {
 	transform: scale(1.1);
 }
 
+
+
+#message{
+	position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+
+    padding: 20px 30px;
+    border-radius: 10px;
+    color: white;
+    background: rgba(0, 0, 0, 0.85);
+
+    opacity: 0;
+    transition: all 0.25s ease;
+
+    pointer-events: none;
+    z-index: 10000;
+
+    font-size: 18px;
+    text-align: center;
+	
+}
+
+#message.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+}
+
+
+.favorites-container{
+	display: flex;
+	justify-content: center;
+}
+
+#userFavorites {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+
+    margin: 25px 0 15px 0;
+    padding-bottom: 8px;
+
+    color: #222;
+    letter-spacing: 0.5px;
+
+    border-bottom: 2px solid #1e88e5;
+    display: inline-block;
+    width: fit-content;
+}
+
 #carDiv {
 	width: 90%;
 	max-width: 900px;
@@ -177,7 +229,10 @@ label {
 
 	border: 1px solid #eef2f7;
 	
-	
+}
+
+.car-card.favorited {
+  border-left: 4px solid #ff4d4d;
 }
 
 .car-card:hover {
@@ -204,12 +259,17 @@ label {
 }
 
 .favorite-icon:hover {
-  transform: scale(1.1);
+  transform: translateY(-2px);
   color: #ff4d4d;
 }
 
 .favorite-icon.active {
   color: #ff4d4d;
+}
+
+.favorite-icon.active:hover{
+	color: grey;
+	transform: translateY(-2px);
 }
 
 #favPopUp {
@@ -282,7 +342,7 @@ label {
 #logoutButton:hover{
 	
 	transform: scale(1.1);
-	font-weight: 300px;
+	font-weight: 300;
 }
 
 #loginLink,
@@ -300,6 +360,6 @@ label {
 
 body {
 	margin: 0;
-	font-family: 'Segoe UI', Tahoma, sans-serif;
+	 font-family: Arial, Helvetica, sans-serif;
 	background: linear-gradient(135deg, #eef2f7, #dfe6ee);
 }

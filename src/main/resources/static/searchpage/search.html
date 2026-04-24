@@ -26,60 +26,65 @@
 			</select>
 		</div>
 		<div class="field">
-		<label for="modelSelect">Choose Model:</label> <select name="cars"
-			id="modelSelect">
-			<option value="default">--Any Model--</option>
+			<label for="modelSelect">Choose Model:</label> <select name="cars"
+				id="modelSelect">
+				<option value="default">--Any Model--</option>
 
-		</select>
+			</select>
 
+		</div>
+		<div class="field">
+			<label for="yearSelect">Choose Year:</label> <select name="cars"
+				id="yearSelect">
+				<option value="default">--Years--</option>
+				<option value="1960-1969">1980-1989</option>
+				<option value="1970-1979">1970-1979</option>
+				<option value="1980-1989">1980-1989</option>
+				<option value="1990-1999">1990-1999</option>
+				<option value="2000-2009">2000-2009</option>
+				<option value="2010-2019">2010-2019</option>
+				<option value="2020-2026">2020-2026</option>
+			</select>
+		</div>
+		<!-- -------------------------------------------------------------------------------- -->
+
+		<div class="field">
+			<label for="priceSelect">Price:</label> <select id="priceSelect">
+				<option value="greater">Greater than</option>
+				<option value="less">Less than</option>
+				<option value="equal">Equal to</option>
+			</select> <input type="number" id="priceValue" placeholder="Enter price:">
+		</div>
+
+		<div class="field">
+
+			<label for="mileageSelect">Mileage:</label> <select
+				id="mileageSelect">
+				<option value="greater">Greater than</option>
+				<option value="less">Less than</option>
+				<option value="equal">Equal to</option>
+			</select> <input type="number" id="mileageValue" placeholder="Enter mileage">
+		</div>
+
+
+
+
+
+		<div>
+			<button id="searchButton">Execute Search</button>
 	</div>
-	<div class="field">
-		<label for="yearSelect">Choose Year:</label> <select name="cars"
-			id="yearSelect">
-			<option value="default">--Years--</option>
-			<option value="1960-1969">1980-1989</option>
-			<option value="1970-1979">1970-1979</option>
-			<option value="1980-1989">1980-1989</option>
-			<option value="1990-1999">1990-1999</option>
-			<option value="2000-2009">2000-2009</option>
-			<option value="2010-2019">2010-2019</option>
-			<option value="2020-2026">2020-2026</option>
-		</select>
-	</div>
-	<!-- -------------------------------------------------------------------------------- -->
-
-	<div class="field">
-		<label for="priceSelect">Price:</label> <select id="priceSelect">
-			<option value="greater">Greater than</option>
-			<option value="less">Less than</option>
-			<option value="equal">Equal to</option>
-		</select> <input type="number" id="priceValue" placeholder="Enter price:">
 	</div>
 
-	<div class="field">
-
-		<label for="mileageSelect">Mileage:</label> <select id="mileageSelect">
-			<option value="greater">Greater than</option>
-			<option value="less">Less than</option>
-			<option value="equal">Equal to</option>
-		</select> <input type="number" id="mileageValue" placeholder="Enter mileage">
-	</div>
+		
+			<p id="message"></p>
+			
+			
+		
+		
 	
+	<div id="favPopUp"></div>
 
-	
-
-
-	<div>
-		<button id="searchButton">Execute Search</button>
-
-
-
-		<p id="message"></p>
-	</div>
-	</div>
-	<div id = "favPopUp"></div>
-
-<div id="sortDiv" style= "display: none">
+	<div id="sortDiv" style="display: none">
 		<label for="sortSelect">Sort List:</label> <select name="sort"
 			id="sortSelect">
 			<option value="default">--No Conditions--</option>
@@ -91,17 +96,19 @@
 			<option value="yrlh">Year Old to New:</option>
 
 		</select>
-	
 
-	<button id="avgButton">Calculate
-		Average:</button>
-	<p id = "AvgCalc"></p>
+
+		<button id="avgButton">Calculate Average:</button>
+		<p id="AvgCalc"></p>
 	</div>
 
+	<div class="favorites-container">
+		<p id="userFavorites"></p>
+	</div>
 
 	<div id="carDiv"></div>
 
-	
+
 	<script src="searchscript.js"></script>
 
 
