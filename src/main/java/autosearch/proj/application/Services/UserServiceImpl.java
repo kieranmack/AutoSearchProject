@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		boolean check = compareForDupes(userDTO, dbDTOList);
 
 		if (check) {
-			return new ApiResponse<Void>(false, "User cannot be saved, already exists", null);
+			return new ApiResponse<Void>(false, "A user with the same username or email already existsS", null);
 		} else
 
 			userRepository.save(user);
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUsername(username);
 
 		if (user == null) {
-			return new ApiResponse<Void>(false, "No user found, try again", null);
+			return new ApiResponse<Void>(false, "username or password incorrect, try again", null);
 		}
 		Roles role = user.getRole();
 		String roleType = role.getRoleType();
