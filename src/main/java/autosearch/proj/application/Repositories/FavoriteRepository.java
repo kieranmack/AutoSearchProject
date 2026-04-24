@@ -9,4 +9,6 @@ import autosearch.proj.application.Entities.Favorite;
 public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
 
 	List<Favorite> findByUserId(int id);
+	
+	void deleteByUser_IdAndCar_Id(int userId, int carId);
 }
