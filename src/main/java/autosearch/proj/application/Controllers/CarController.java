@@ -3,6 +3,7 @@ package autosearch.proj.application.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class CarController {
 	@Autowired
 	private CarService carService;
 
-	// constructor to create carservice object to make calls to the service class
+	
 	
 	// Endpoint for GET HTTP method, ie READ (CRUD), this will return all car
 	// objects in
@@ -55,30 +56,42 @@ public class CarController {
 		return carService.findCars(make, model, minYear, maxYear, minMileage, maxMileage,
 						minPrice, maxPrice);
 	}
+	
+	//returning list of favorites by user
 	@GetMapping("/api/search/favorites/")
 	@ResponseBody
 	public List<CarDTO> getFavorites(HttpSession session){
 		return carService.returnFavorites(session);
 	}
 	
+	//endpoint returning distinct makes
 	@GetMapping("/api/makes/")
 	@ResponseBody
 	public List<String> getMakes(){
 		return carService.returnMakes();
 	}
 	
+	//endpoint for returning models by the make
 	@GetMapping("/api/models/")
 	@ResponseBody
 	public List<String> getModelsByMake(@RequestParam(required = true) String make){
 		return carService.returnModelsByMake(make);
 	}
 	
-	
+	//endpoint adding favorites
 	@PostMapping("api/addFavorite")
 	@ResponseBody
 	public ApiResponse<Void> addFavorite( @RequestParam(required = true)
 											int carId, HttpSession session) {
 		return carService.addFavorite(session, carId);
+	}
+	
+	//endpoint for deleting a favorite
+	@DeleteMapping("/api/removeFavorite")
+	@ResponseBody
+	public ApiResponse<Void> removeFavorite(HttpSession session,
+								@RequestParam(required = true) int carId){
+		return carService.deleteFavorite(session, carId);
 	}
 	
 	

@@ -18,9 +18,11 @@ import autosearch.proj.application.Entities.User;
 import autosearch.proj.application.Repositories.CarRepository;
 import autosearch.proj.application.Repositories.FavoriteRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 //Car Service implementation, override interface methods
 //Service tag is necessary for Spring Boot to read
+@Transactional
 @Service
 public class CarServiceImpl implements CarService {
 
@@ -189,19 +191,32 @@ public class CarServiceImpl implements CarService {
 	/////////////////////////////////////////////////////////////
 	////Returning most recent 10 cars for admin
 	
-	public List<CarDTO> findAdminCars(){
+	public List<Car> findAdminCars(){
 		List<Car> dbList = carRepository.findTop10ByOrderByDateAddedDesc();
 		
-		List<CarDTO> dtoList = convertToDTOList(dbList);
+		return dbList;
 		
-		return dtoList;
+		
 		
 	}
 	
+	//deleting favorite record from table. 
 	
+	public ApiResponse<Void> deleteFavorite(HttpSession session, int carId){
+		User user = (User)session.getAttribute("loggedIn");
+		
+		
+		if(user == null) {
+			return new ApiResponse<Void>(false, "User must be logged in", null);
+		}
+		int userId = user.getId();
+		
+		favoriteRepository.deleteByUser_IdAndCar_Id(userId, carId);
+		return new ApiResponse<Void>(true, "Car successfully unfavorited", null);
+		
 
 	
-	
+	}
 	
 	
 	

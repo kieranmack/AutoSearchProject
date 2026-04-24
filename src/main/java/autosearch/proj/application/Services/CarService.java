@@ -36,7 +36,9 @@ public interface CarService {
 	
 	public ApiResponse<Void> addFavorite(HttpSession session, int carId);
 	
-	public List<CarDTO> findAdminCars();
+	public List<Car> findAdminCars();
+	
+	public ApiResponse<Void> deleteFavorite(HttpSession session, int carId);
 	
 
 	
