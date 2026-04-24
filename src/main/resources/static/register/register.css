@@ -78,6 +78,36 @@
 	transition: 0.3s ease;
 }
 
+#message{
+	position: fixed;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+
+    padding: 20px 30px;
+    border-radius: 10px;
+    color: white;
+    background: rgba(0, 0, 0, 0.85);
+
+    opacity: 0;
+    transition: all 0.25s ease;
+
+    pointer-events: none;
+    z-index: 10000;
+
+    font-size: 18px;
+    text-align: center;
+	
+}
+
+#message.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+	background: red;
+}
+
+
 
 
 h2 {
