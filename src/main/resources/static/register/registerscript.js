@@ -35,9 +35,13 @@
 	   		        }, 2000);
 		
 	//redirect to login page
-		if(result.success == true){
-			window.location.href = "/login/login.html";
-		}
+	if(result.success == true){
+		messageP.classList.add('success');
+	    setTimeout(() => {
+	        window.location.href = "/login/login.html";
+			messageP.classList.remove('success');
+	    }, 2000);
+	}
 		
 		
 	
