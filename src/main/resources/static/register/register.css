@@ -107,6 +107,10 @@
 	background: red;
 }
 
+#message.success{
+	background: green;
+}
+
 
 
 

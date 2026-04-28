@@ -17,7 +17,8 @@
 
 		</div>
 	</div>
-	<h2>Select Below to Find Info on Used Cars</h2>
+
+	<h2>Find the right car for you.</h2>
 	<div class="carParams">
 		<div class="field">
 			<label for="makeSelect">Choose Make:</label> <select name="cars"
@@ -71,17 +72,24 @@
 
 
 		<div>
-			<button id="searchButton">Execute Search</button>
-	</div>
+			<button id="searchButton">Search</button>
+		</div>
 	</div>
 
-		
-			<p id="message"></p>
-			
-			
-		
-		
-	
+
+
+	<div id = "confirmDeleteFav" style = "display: none">
+		<p id = "yOrN">Are you sure you want to unfavorite this car?</p>
+	<div class = modal-actions>
+		<button id = "yes">Confirm</button>
+		<button id = "no">Cancel</button>
+	</div>
+	</div>
+	<p id="message"></p>
+
+<div id = "overlay"></div>
+
+
 	<div id="favPopUp"></div>
 
 	<div id="sortDiv" style="display: none">
