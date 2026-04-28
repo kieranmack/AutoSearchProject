@@ -4,7 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-//Main class that runs the entire project, nothing will change here. 
+//Main class that runs the entire project, nothing will change here.
+//MVP
 @SpringBootApplication
 @EnableScheduling
 public class AutoSearchProjectApplication {
