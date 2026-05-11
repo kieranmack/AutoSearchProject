@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 //Main class that runs the entire project, nothing will change here.
-//MVP
+//FINAL
 @SpringBootApplication
 @EnableScheduling
 public class AutoSearchProjectApplication {
