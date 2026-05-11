@@ -18,6 +18,7 @@ let user = null;
 const userFavorites = document.getElementById('userFavorites');
 userFavorites.style.display = "none";
 const messageP = document.getElementById('message');
+const favoriteCarIds = new Set();
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -105,35 +106,37 @@ searchButton.addEventListener('click', function() {
 //displaying cars nicely
 function displayCars(data, mode) {
 
-	
-	userFavorites.innerHTML = "";
-	userFavorites.style.display = "none";
+	const seeMoreButton = document.getElementById('seeMore');
+	let count = 0;
+	sortDiv.style.display = "none";
+    userFavorites.innerHTML = "";
+    userFavorites.style.display = "none";
     carDiv.innerHTML = "";
-	messageP.innerHTML = "";
-	
-	if(data.length == 0 && mode == "favorites"){
-		messageP.innerHTML = "You have no favorites, try it out!";
-		messageP.classList.add('show');
-		sortDiv.style.display = "none";
-		setTimeout(() => {
-							messageP.classList.remove('show');
-						
-				        }, 2000);
-			return;
-		
-	}
+    messageP.innerHTML = "";
+
+    if (data.length == 0 && mode == "favorites") {
+        messageP.innerHTML = "You have no favorites, try it out!";
+        messageP.classList.add('show');
+        sortDiv.style.display = "none";
+        setTimeout(() => {
+            messageP.classList.remove('show');
+
+        }, 2000);
+        return;
+
+    }
 
     if (data.length == 0) {
-       
+
         messageP.innerHTML = "No matching cars, try again.";
-     	messageP.classList.add('show');
+        messageP.classList.add('show');
         sortDiv.style.display = "none";
-		
-		setTimeout(() => {
-					messageP.classList.remove('show');
-				
-		        }, 2000);
-		return;
+
+        setTimeout(() => {
+            messageP.classList.remove('show');
+
+        }, 2000);
+        return;
 
     }
 
@@ -144,8 +147,8 @@ function displayCars(data, mode) {
 
 
     data.forEach(car => {
-
-
+	
+	
         //for each car in the list, createElements and add it to the div
         const carCard = document.createElement("div");
         carCard.classList.add("car-card");
@@ -172,33 +175,34 @@ function displayCars(data, mode) {
         const priceP = document.createElement("p");
         priceP.innerHTML = `Price: $${car.price}`;
         carCard.appendChild(priceP);
-		
-		const sourceLink = document.createElement("a");
-		sourceLink.innerHTML = `Source: ${car.source}`;
-		carCard.appendChild(sourceLink);
+
+        const sourceLink = document.createElement("a");
+        sourceLink.innerHTML = `Source: ${car.source}`;
+        carCard.appendChild(sourceLink);
 
         if (mode == "search" || mode == "favorites") {
-			const favEachButton = document.createElement("i");
+            const favEachButton = document.createElement("i");
             favEachButton.classList.add("fa-solid", "fa-heart", "favorite-icon");
             favEachButton.dataset.carId = car.id;
-            
 
-			if(mode == "favorites"){
-				favEachButton.classList.add('active');
+
+			if (favoriteCarIds.has(car.id)) {
+			    favEachButton.classList.add('active');
 			}
-			
-			carCard.appendChild(favEachButton);
+
+            carCard.appendChild(favEachButton);
 
         }
-		
-		if(mode == "favorites"){
-			carCard.classList.add('favorited');
-			userFavorites.innerHTML = `${user.data.username}'s favorites:`;
-			userFavorites.style.display = "block";
-		}
+
+        if (mode == "favorites") {
+            carCard.classList.add('favorited');
+            userFavorites.innerHTML = `${user.data.username}'s favorites:`;
+            userFavorites.style.display = "block";
+        }
 
 
         carDiv.appendChild(carCard)
+		count++;
 
 
     });
@@ -207,22 +211,20 @@ function displayCars(data, mode) {
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-
+/////////////////////////////////////////////////////////////////////////////////
 //return Favorite button event Listener
 favButton.addEventListener('click', function() {
-	
-	
+
+
     if (user.success == false) {
         favPopUp.textContent = `Log in or Register to unlock this feature!`;
         favPopUp.classList.add("error");
         favPopUp.classList.remove("success");
-        
 
-		favPopUp.classList.add("show");
+
+        favPopUp.classList.add("show");
         setTimeout(() => {
-			favPopUp.classList.remove('show');
+            favPopUp.classList.remove('show');
         }, 2000);
     } else {
         fetch(favoriteUrl)
@@ -232,6 +234,10 @@ favButton.addEventListener('click', function() {
 
                 currentCars.length = 0;
                 currentCars.push(...data);
+				
+				//store favorites here to persist
+				favoriteCarIds.clear();
+				data.forEach(car => favoriteCarIds.add(car.id));
 
                 displayCars(currentCars, "favorites");
             })
@@ -247,6 +253,7 @@ favButton.addEventListener('click', function() {
 
 document.addEventListener('DOMContentLoaded', async function() {
 
+	//populate makes on page load
     fetch(makeDropUrl)
         .then(response => response.json())
         .then(data => {
@@ -258,6 +265,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         })
         .catch(err => console.error(err));
 
+		//cache favorites on page load
+		fetch(favoriteUrl)
+		    .then(response => response.json())
+		    .then(data => {
+		        favoriteCarIds.clear();
+		        data.forEach(car => favoriteCarIds.add(car.id));
+		    })
+		    .catch(err => console.error(err));
 
     //check for login at page load. 
     loginCheck();
@@ -373,7 +388,7 @@ avgButton.addEventListener('click', function() {
 
     const sumValue = sum.reduce((partialSum, a) => partialSum + a, 0);
 
-	const avg = sumValue / currentCars.length;
+    const avg = sumValue / currentCars.length;
     avgValueP.innerHTML = `Average Price of Selected Cars: $${avg.toFixed(2)}`;
 
 })
@@ -387,20 +402,33 @@ carDiv.addEventListener('click', async function(e) {
 
     if (e.target.classList.contains('favorite-icon')) {
 
-        const carId = e.target.dataset.carId;
-
+        const carIdStr = e.target.dataset.carId;
+		const carNum = Number(carIdStr);
+        
+		
+       
+       
         //checking current state, is it "active"
         const isActive = e.target.classList.contains('active');
+        
+
 
         if (isActive) {
+           
+			//adding an await function, which will determine if we continue forward or not
+			const confirmation = await waitForConfirmation();
+			
+			if(!confirmation) return;
 
-           //if active remove favorite
+            //if active remove favorite
             try {
                 const response = await fetch(
-                    `http://localhost:8080/api/removeFavorite?carId=${carId}`,{
-                    
-                        method: 'DELETE'
+                    `http://localhost:8080/api/removeFavorite?carId=${carNum}`, {
+
+                    method: 'DELETE'
                 });
+
+
 
                 const result = await response.json();
                 console.log(result);
@@ -413,6 +441,8 @@ carDiv.addEventListener('click', async function(e) {
                     favPopUp.textContent = `${result.message}`;
                     favPopUp.classList.add("success");
                     favPopUp.classList.remove("error");
+					favoriteCarIds.delete(Number(carNum));
+					e.target.classList.remove('active');
                 }
 
                 favPopUp.classList.add("show");
@@ -421,8 +451,10 @@ carDiv.addEventListener('click', async function(e) {
                     favPopUp.classList.remove("show");
                 }, 2000);
 				
-				display
 				
+
+
+
 
             } catch (error) {
                 console.error('Error:', error);
@@ -435,7 +467,7 @@ carDiv.addEventListener('click', async function(e) {
             // if not active, add favorite
             try {
                 const response = await fetch(
-                    `http://localhost:8080/api/addFavorite?carId=${carId}`,
+                    `http://localhost:8080/api/addFavorite?carId=${carNum}`,
                     {
                         method: 'POST'
                     }
@@ -452,6 +484,8 @@ carDiv.addEventListener('click', async function(e) {
                     favPopUp.textContent = `${result.message}`;
                     favPopUp.classList.add("success");
                     favPopUp.classList.remove("error");
+					favoriteCarIds.add(carNum);
+					e.target.classList.add('active');
                 }
 
                 favPopUp.classList.add("show");
@@ -468,6 +502,52 @@ carDiv.addEventListener('click', async function(e) {
         }
     }
 });
+////////////////////////////////////await confirmation of deletion function///////
+
+
+function waitForConfirmation(){
+	return new Promise((resolve)=>{
+		const confirmDeleteFav = document.getElementById('confirmDeleteFav');
+		const yesButton = document.getElementById('yes');
+		const noButton = document.getElementById('no');
+		const overlay = document.getElementById('overlay');
+		
+		//display block
+		confirmDeleteFav.style.display = "block";
+		overlay.style.display = "block";
+		
+		//if yes clicked, return true aka success keep going
+		//and hide display of confirmdelete div 
+		yesButton.onclick = ()=>{
+			resolve(true);
+			confirmDeleteFav.style.display = "none";
+			overlay.style.display = "none";
+		}
+		
+		//if no clicked return false exit method. 
+		noButton.onclick = ()=>{
+			resolve(false);
+			confirmDeleteFav.style.display = "none";
+			overlay.style.display = "none";
+		}
+		
+		
+	});
+		
+
+	
+	
+}
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
 
 
 //////////////////////////////////////////////////////////////////////
@@ -490,7 +570,7 @@ userIcon.addEventListener('click', function() {
             if (data.success == false) {
                 //if it's a fail, then we prompt user to register
                 const errorP = document.createElement("p");
-                errorP.innerHTML = "Log in To save your Favorite Cars!"
+                errorP.innerHTML = "Log in to save your favorite cars!"
                 userDropdown.appendChild(errorP);
                 //create new reg button when click on user icon, if not already 
                 //logged in 
@@ -500,6 +580,13 @@ userIcon.addEventListener('click', function() {
                 const logInLink = document.createElement("a");
                 logInLink.id = "loginLink";
                 logInLink.innerHTML = "Login"
+				const linkContainer = document.createElement("div");
+				linkContainer.classList.add("link-row");
+
+				linkContainer.appendChild(registerLink);
+				linkContainer.appendChild(logInLink);
+
+				userDropdown.appendChild(linkContainer);
                 registerLink.onclick = () => {
                     window.location.href = "/register/register.html";
                 };
@@ -507,8 +594,7 @@ userIcon.addEventListener('click', function() {
                     window.location.href = "/login/login.html";
                 };
 
-                userDropdown.appendChild(registerLink);
-                userDropdown.appendChild(logInLink);
+               
 
             } else if (data.success == true) {
                 const successP = document.createElement("p");
@@ -523,8 +609,11 @@ userIcon.addEventListener('click', function() {
                         .then(response => response.json())
                         .then(data => {
 
-                            successP.innerHTML = `Thanks for choosing Autosearch ${data.message}`;
-							logOutButton.style.display = "none";
+                            successP.innerHTML = `Thanks for choosing Autosearch`;
+                            logOutButton.style.display = "none";
+							setTimeout(() => {
+							        window.location.href = "/index.html";
+							    }, 2000);
 
                         })
                 };
