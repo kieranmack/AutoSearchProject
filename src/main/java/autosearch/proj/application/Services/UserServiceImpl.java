@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		boolean check = compareForDupes(userDTO, dbDTOList);
 
 		if (check) {
-			return new ApiResponse<Void>(false, "A user with the same username or email already existsS", null);
+			return new ApiResponse<Void>(false, "A user is registered with the same email or username", null);
 		} else
 
 			userRepository.save(user);

@@ -34,16 +34,29 @@
 
 .registerContainer {
 	display: flex;
-	flex-direction: column;
-	gap: 14px;
-	width: 350px;
-	padding: 24px;
-	margin: 60px auto;
+		flex-direction: column;
+		width: 350px;
+		padding: 24px;
+		gap: 18px; 
+		margin: 60px auto;
 
-	background: white;
-	border-radius: 16px;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+		background: white;
+		border-radius: 16px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+		
 
+}
+
+#registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+	display: flex;
+		flex-direction: column;
+		gap: 4px;
 }
 
 #username,
@@ -51,9 +64,39 @@
 #email {
 	width: 100%;
 	padding: 10px;
-	gap: 10px;
 	box-sizing: border-box;
-	margin: 20px auto;
+	gap: 12px;
+	
+}
+
+#username:focus, #password:focus, #email:focus {
+	outline: none;
+	border-color: #4a90e2;
+	background-color: white;
+	box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+}
+
+
+#usernameError, #passwordError, #emailError, #errorFull{
+	color: red;
+	font-size: 14px;
+}
+
+#username.empty{
+	border: solid red 1px;
+	 background-color: rgba(255, 0, 0, 0.08);
+	
+}
+
+#password.empty{
+	border: solid red 1px;
+	 background-color: rgba(255, 0, 0, 0.08);
+	
+}
+
+#email.empty{
+	border: solid red 1px;
+		 background-color: rgba(255, 0, 0, 0.08);
 }
 
 #registerButton{
@@ -104,14 +147,12 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     pointer-events: auto;
-	background: red;
+	 background-color: red;
 }
 
 #message.success{
 	background: green;
 }
-
-
 
 
 h2 {

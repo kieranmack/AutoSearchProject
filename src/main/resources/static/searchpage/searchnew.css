@@ -11,6 +11,7 @@ h2 {
 	display: flex;
 	align-items: center;
 	padding: 0 10px;
+	
 }
 
 /* right icons */
@@ -27,7 +28,6 @@ h2 {
 	padding: 14px 16px;
 	text-decoration: none;
 	font-size: 17px;
-	transform: translateY(10px);
 	transition: 0.2s ease;
 }
 
@@ -56,8 +56,11 @@ h2 {
 }
 
 .topnav a:hover {
-	background-color: white;
-	color: black;
+	background-color: #ddd;
+  color: black;
+  transition: 0.5s ease;
+ 
+	
 }
 
 .carParams {
@@ -66,14 +69,13 @@ h2 {
 	gap: 15px;
 	width: 350px;
 	padding: 20px;
-	border: 2px solid black;
+	border-radius: 16px;
 	margin: 40px auto;
+	background: white;
 	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.field:hover {
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-}
+
 
 .field {
 	display: flex;
@@ -81,9 +83,10 @@ h2 {
 	width: 100%;
 }
 
+
 input, select {
 	padding: 10px 12px;
-	border-radius: 8px;
+	border-radius: 10px;
 	border: 1px solid #d0d5dd;
 	font-size: 14px;
 	transition: all 0.2s ease;
@@ -93,8 +96,11 @@ input, select {
 input:focus, select:focus {
 	outline: none;
 	border-color: #4a90e2;
-	background-color: white;
-	box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+	
+}
+
+input:hover, select:hover{
+	cursor: pointer;
 }
 
 label {
@@ -392,16 +398,32 @@ label {
   z-index: 1000;
 
   opacity: 0;
-  transform: translateY(-10px);
   pointer-events: none;
   transition: all 0.2s ease;
+  
+  display: flex;   
+  flex-direction: column;     
+  gap: 10px;            
+}
+
+.link-row {
+  display: flex;
+  gap: 10px;
+}
+
+.link-row a {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
 }
 
 /* visible state */
 #userDropdown.show {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
+  overflow:hidden;
+ 
 }
 
 /* logout button*/
@@ -431,6 +453,7 @@ label {
 #loginLink:hover{
 	
 	cursor: pointer;
+	color: purple;
 }
 
 

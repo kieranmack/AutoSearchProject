@@ -42,14 +42,39 @@
 	
 }
 
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px; 
+}
+
 #username, 
 #password{
 	width: 100%;
 	padding: 10px;
-	gap: 10px;
 	box-sizing: border-box;
-	margin: 20px auto;
+	
 }
+#errorUsername, #errorPassword, #errorFull{
+	color: red;
+    font-size: 14px;
+    margin-top: 4px;
+
+}
+
+#username.empty{
+	border: solid red 1px;
+	 background-color: rgba(255, 0, 0, 0.08);
+	
+}
+
+#password.empty{
+	border: solid red 1px;
+	 background-color: rgba(255, 0, 0, 0.08);
+	
+}
+
+
 
 #username:focus, #password:focus {
 	outline: none;
@@ -70,6 +95,8 @@
 	font-weight: 600;
 	cursor: pointer;
 }
+
+
 
 #loginButton:hover{
 	transform: translateY(-2px);

@@ -15,12 +15,26 @@
 	
 <div class = "registerContainer">
 	<h1>Register</h1>
-	<form id="registerForm">
-		<input type="text" id="username" placeholder="Username" required><br>
-		<input type="password" id="password" placeholder="Password (min 8 chars)" minlength="8" required><br>
-		<input type="email" id="email" placeholder="Email" required><br>
+	<form id="registerForm" novalidate>
+	<div class = "input-group">
+		<input type="text" id="username" placeholder="Username" required>
+	<p id = "usernameError" style = "display: none"></p>
+	</div>
+	<div class = "input-group">
+		<input type="password" id="password" placeholder="Password (min 8 chars)" minlength="8" required>
+		<p id = "passwordError" style = "display: none"></p>
+	</div>
+	<div class = "input-group">
+		<input type="email" id="email" placeholder="Email" required>
+		<p id = "emailError" style = "display: none"></p>
+	</div>
+	
+	<div class = "input-group">
+				
+			<p id = "errorFull" style = "display: none"></p>
+			</div>
 		<button type="submit" id = "registerButton">Register</button>
-		<div id = "logInContainer">
+	<div id = "logInContainer">
 			<p>Already have an account?</p>
 			<a href = "/login/login.html" id = "loginLink">Log in</a>
 		</div>
